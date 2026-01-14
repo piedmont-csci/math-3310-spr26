@@ -1,0 +1,43 @@
+---
+title: "Monte Carlo Simulations"
+format: html
+editor: visual
+---
+
+Recall that we found that if $X_1, X_2\sim U(0, 1)$, then the minimum $X_{(1)}$ has probability density function $f_{X_{(1)}}(x) = 2(1-x)$. Integrating, its cumulative distribution function (on the unit interval) is \begin{align}
+F_{X_{(1)}}(x) &= \int_0^x 2(1 - t)\,dt \\
+&= -(1-t)^2\Big|_0^x \\
+&= -(1-x)^2 + (1 - 0)^2 \\
+&= -1 + 2x - x^2 + 1 \\
+&= -x^2 + 2x
+\end{align}
+
+Let's check this with some Monte Carlo simulations. For example, we should expect that the probability that our minimum is less than $\frac{1}{2}$ is
+
+$$F_{X_{(1)}}(0.5) = -0.5^2 + 2\cdot 0.5 = 0.75$$
+
+Recall that `runif(2)` will generate a random sample from our, and `min(runif(2))` will give us the minimum. We can do this multiple times with `replicate`:
+
+```{r}
+replicate(10, min(runif(2)))
+```
+
+We're interested in finding the number of our random samples that were less than 0.5. If we replicate a statement, we'll get a list of a bunch of boolean (TRUE or FALSE) objects.
+
+```{r}
+replicate(10, min(runif(2)) < 0.5)
+```
+
+R treats these Boolean objects like integers (0 for FALSE and 1 for TRUE), so we can compute the proportion of TRUE's by taking the mean:
+
+```{r}
+mean(replicate(10, min(runif(2)) < 0.5))
+```
+
+Now let's increase the sample size:
+
+```{r}
+mean(replicate(10000, min(runif(2)) < 0.5))
+```
+
+We got pretty close to our theoretical result of 0.75!

@@ -1,0 +1,53 @@
+---
+title: "Statistical Graphics"
+format: html
+editor: visual
+---
+
+# Statistical Graphics
+
+We will use the software platform R to do many computations.
+
+R comes with various builtin datasets to play around with.
+
+```{r}
+HairEyeColor
+```
+
+There are various ways to represent data visually using graphics. One example is a "mosaic plot":
+
+```{r}
+mosaicplot(~ Eye + Sex, data=HairEyeColor)
+```
+
+Visually, it appears that hair and eye color may be independent from sex, but eye and hair color may be dependent on each other.
+
+We can import data sets using the **scan** function:
+
+```{r}
+speed.of.light <- scan("michelson1.d")
+sort(speed.of.light)
+stem(speed.of.light)
+```
+
+```{r}
+hist(speed.of.light)
+```
+
+Based on these graphics, it appears that these measurements may come from a normal distribution.
+
+```{r}
+boxplot(speed.of.light)
+```
+
+```{r}
+quantile(speed.of.light, c(0, 0.25, 0.5, 0.75, 1))
+```
+
+```{r}
+plot.ecdf(speed.of.light, ylab="F_n(x)")
+```
+
+```{r}
+help(plot.ecdf)
+```
