@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - run: sudo apt-get install -y r-base
+      - run: sudo apt-get install -y r-base r-cran-knitr r-cran-rmarkdown
       - uses: quarto-dev/quarto-actions/setup@v2
       - uses: quarto-dev/quarto-actions/render@v2
       - uses: quarto-dev/quarto-actions/publish@v2
