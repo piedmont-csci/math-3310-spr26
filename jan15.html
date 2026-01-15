@@ -180,7 +180,10 @@ F_{\overline X}(z) = \begin{cases}
 -\frac{8}{3}z^4 + 8z^2 - \frac{16}{3}z + 1 &amp;\text{if }\frac{1}{2} &lt; z &lt; 1 \\
 1 &amp;\text{if }z \geq 1\\
 \end{cases}
-\]</span> ## Monte Carlo simulation</p>
+\]</span></p>
+</section>
+<section id="monte-carlo-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="monte-carlo-simulation">Monte Carlo simulation</h2>
 <p>First, let’s define an R function to evaluate our cdf from above:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>F <span class="ot">&lt;-</span> <span class="cf">function</span>(z) {</span>
@@ -199,7 +202,7 @@ F_{\overline X}(z) = \begin{cases}
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5774818</code></pre>
+<pre><code>[1] 0.4566393</code></pre>
 </div>
 </div>
 <p>To perform our Monte Carlo simulation, we use <code>replicate</code> to perform the process a bunch of times. Each time, we compare to some value, yielding <code>TRUE</code> or <code>FALSE</code>, and then <code>mean</code> to find the proportion of <code>TRUE</code>’s. (Since <code>TRUE</code> is treated like 1 and <code>FALSE</code> like 0.)</p>
@@ -212,7 +215,7 @@ F_{\overline X}(z) = \begin{cases}
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0094</code></pre>
+<pre><code>[1] 0.0106</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -223,7 +226,7 @@ F_{\overline X}(z) = \begin{cases}
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1595</code></pre>
+<pre><code>[1] 0.1613</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -234,7 +237,7 @@ F_{\overline X}(z) = \begin{cases}
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.656</code></pre>
+<pre><code>[1] 0.662</code></pre>
 </div>
 </div>
 <p>Not bad!</p>
