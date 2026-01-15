@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Monte Carlo Simulations – MATH 3310</title>
+<title>Monte Carlo simulations for the beta distribution – MATH 3310</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,7 +148,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Monte Carlo Simulations</h1>
+<h1 class="title">Monte Carlo simulations for the beta distribution</h1>
 </div>
 
 
@@ -165,47 +165,82 @@ window.Quarto = {
 </header>
 
 
-<p>Recall that we found that if <span class="math inline">\(X_1, X_2\sim U(0, 1)\)</span>, then the minimum <span class="math inline">\(X_{(1)}\)</span> has probability density function <span class="math inline">\(f_{X_{(1)}}(x) = 2(1-x)\)</span>. Integrating, its cumulative distribution function (on the unit interval) is <span class="math display">\[\begin{align}
-F_{X_{(1)}}(x) &amp;= \int_0^x 2(1 - t)\,dt \\
-&amp;= -(1-t)^2\Big|_0^x \\
-&amp;= -(1-x)^2 + (1 - 0)^2 \\
-&amp;= -1 + 2x - x^2 + 1 \\
-&amp;= -x^2 + 2x
-\end{align}\]</span></p>
-<p>Let’s check this with some Monte Carlo simulations. For example, we should expect that the probability that our minimum is less than <span class="math inline">\(\frac{1}{2}\)</span> is</p>
-<p><span class="math display">\[F_{X_{(1)}}(0.5) = -0.5^2 + 2\cdot 0.5 = 0.75\]</span></p>
-<p>Recall that <code>runif(2)</code> will generate a random sample from our, and <code>min(runif(2))</code> will give us the minimum. We can do this multiple times with <code>replicate</code>:</p>
+<section id="beta-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="beta-distribution">Beta distribution</h2>
+<p>Recall that if <span class="math inline">\(X\)</span> has the <em>beta distribution</em> with shape parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, i.e., <span class="math inline">\(X\sym\operatorname{Beta}(\alpha,\beta)\)</span>, then <span class="math inline">\(X\)</span> has probability density function</p>
+<p><span class="math display">\[f_X(x) = \begin{cases}
+\frac{1}{B(\alpha)(\beta)}x^{\alpha - 1}(1 - x)^{\beta - 1} &amp; \text{if }0 &lt; x &lt; 1 \\
+0 &amp; \text{otherwise,}
+\end{cases}
+\]</span> where <span class="math inline">\(B\)</span> is the <em>beta function</em> given by <span class="math display">\[B(\alpha,\beta) = \int_0^1x^{\alpha - 1}(1 - x)^{\beta - 1}\,dx = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha + \beta)}.\]</span></p>
+<p>We saw in class that if <span class="math inline">\(X_1,X_2\sym\operatorname{Beta}(2, 1)\)</span>, then their sample mean <span class="math inline">\(\overline X\)</span> has cumulative distribution function <span class="math display">\[
+F_{\overline X}(z) = \begin{cases}
+0 &amp;\text{if }z \leq 0 \\
+\frac{8}{3}z^4 &amp;\text{if } 0 &lt; z \leq\frac{1}{2} \\
+-\frac{8}{3}z^4 + 8z^2 - \frac{16}{3}z + 1 &amp;\text{if }\frac{1}{2} &lt; z &lt; 1 \\
+1 &amp;\text{if }z \geq 1\\
+\end{cases}
+\]</span> ## Monte Carlo simulation</p>
+<p>First, let’s define an R function to evaluate our cdf from above:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">10</span>, <span class="fu">min</span>(<span class="fu">runif</span>(<span class="dv">2</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] 0.67468700 0.44783443 0.03612652 0.34445951 0.02099621 0.05980279
- [7] 0.20105532 0.04022018 0.55169667 0.01815948</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>F <span class="ot">&lt;-</span> <span class="cf">function</span>(z) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (z <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (z <span class="sc">&lt;=</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) {</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="dv">8</span><span class="sc">/</span><span class="dv">3</span> <span class="sc">*</span> z<span class="sc">^</span><span class="dv">4</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (z <span class="sc">&lt;</span> <span class="dv">1</span> ) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span> (<span class="sc">-</span><span class="dv">8</span><span class="sc">/</span><span class="dv">3</span> <span class="sc">*</span> z<span class="sc">^</span><span class="dv">4</span> <span class="sc">+</span> <span class="dv">8</span><span class="sc">*</span>z<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">16</span><span class="sc">/</span><span class="dv">3</span><span class="sc">*</span>z <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="dv">1</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<p>We’re interested in finding the number of our random samples that were less than 0.5. If we replicate a statement, we’ll get a list of a bunch of boolean (TRUE or FALSE) objects.</p>
+<p>Next, we can use R to generate a random sample of <span class="math inline">\(\overline X\)</span> by first using <code>rbeta(2, 2, 1)</code> to generate 2 random samples from a <span class="math inline">\(\operatorname{Beta}(2, 1)\)</span> distribution, and then <code>mean</code> to find their sample mean.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">10</span>, <span class="fu">min</span>(<span class="fu">runif</span>(<span class="dv">2</span>)) <span class="sc">&lt;</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE</code></pre>
+<pre><code>[1] 0.5649408</code></pre>
 </div>
 </div>
-<p>R treats these Boolean objects like integers (0 for FALSE and 1 for TRUE), so we can compute the proportion of TRUE’s by taking the mean:</p>
+<p>To perform our Monte Carlo simulation, we use <code>replicate</code> to perform the process a bunch of times. Each time, we compare to some value, yielding <code>TRUE</code> or <code>FALSE</code>, and then <code>mean</code> to find the proportion of <code>TRUE</code>’s. (Since <code>TRUE</code> is treated like 1 and <code>FALSE</code> like 0.)</p>
+<p>Let’s choose several different choices for <span class="math inline">\(z\)</span> and compare the theoretical results with our simulated results.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10</span>, <span class="fu">min</span>(<span class="fu">runif</span>(<span class="dv">2</span>)) <span class="sc">&lt;</span> <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fl">0.25</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">F</span>(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9</code></pre>
+<pre><code>[1] 0.01041667</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0095</code></pre>
 </div>
 </div>
-<p>Now let’s increase the sample size:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">min</span>(<span class="fu">runif</span>(<span class="dv">2</span>)) <span class="sc">&lt;</span> <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">F</span>(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7429</code></pre>
+<pre><code>[1] 0.1666667</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1694</code></pre>
 </div>
 </div>
-<p>We got pretty close to our theoretical result of 0.75!</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fl">0.75</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">F</span>(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.65625</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.66</code></pre>
+</div>
+</div>
+<p>Not bad!</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
