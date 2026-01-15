@@ -25,6 +25,7 @@ F_{\overline X}(z) = \begin{cases}
 1 &\text{if }z \geq 1\\
 \end{cases}
 $$
+
 ## Monte Carlo simulation
 
 First, let's define an R function to evaluate our cdf from above:
