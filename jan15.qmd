@@ -1,0 +1,74 @@
+---
+title: "Monte Carlo simulations for the beta distribution"
+format: html
+editor: visual
+---
+
+## Beta distribution
+
+Recall that if $X$ has the *beta distribution* with shape parameters $\alpha$ and $\beta$, i.e., $X\sym\operatorname{Beta}(\alpha,\beta)$, then $X$ has probability density function
+
+$$f_X(x) = \begin{cases}
+\frac{1}{B(\alpha)(\beta)}x^{\alpha - 1}(1 - x)^{\beta - 1} & \text{if }0 < x < 1 \\
+0 & \text{otherwise,}
+\end{cases}
+$$
+where $B$ is the *beta function* given by
+$$B(\alpha,\beta) = \int_0^1x^{\alpha - 1}(1 - x)^{\beta - 1}\,dx = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha + \beta)}.$$
+
+We saw in class that if $X_1,X_2\sym\operatorname{Beta}(2, 1)$, then their sample mean $\overline X$ has cumulative distribution function
+$$
+F_{\overline X}(z) = \begin{cases}
+0 &\text{if }z \leq 0 \\
+\frac{8}{3}z^4 &\text{if } 0 < z \leq\frac{1}{2} \\
+-\frac{8}{3}z^4 + 8z^2 - \frac{16}{3}z + 1 &\text{if }\frac{1}{2} < z < 1 \\
+1 &\text{if }z \geq 1\\
+\end{cases}
+$$
+## Monte Carlo simulation
+
+First, let's define an R function to evaluate our cdf from above:
+
+```{r}
+F <- function(z) {
+  if (z <= 0) {
+    return(0)
+  } else if (z <= 1/2) {
+    return(8/3 * z^4)
+  } else if (z < 1 ) {
+    return (-8/3 * z^4 + 8*z^2 - 16/3*z + 1)
+  } else {
+    return(1)
+  }
+}
+```
+
+Next, we can use R to generate a random sample of $\overline X$ by first using `rbeta(2, 2, 1)` to generate 2 random samples from a $\operatorname{Beta}(2, 1)$ distribution, and then `mean` to find their sample mean.
+
+```{r}
+mean(rbeta(2,2,1))
+```
+
+To perform our Monte Carlo simulation, we use `replicate` to perform the process a bunch of times.  Each time, we compare to some value, yielding `TRUE` or `FALSE`, and then `mean` to  find the proportion of `TRUE`'s.  (Since `TRUE` is treated like 1 and `FALSE` like 0.)
+
+Let's choose several different choices for $z$ and compare the theoretical results with our simulated results.
+
+```{r}
+z <- 0.25
+F(z)
+mean(replicate(10000, mean(rbeta(2,2,1)) < z))
+```
+
+```{r}
+z <- 0.5
+F(z)
+mean(replicate(10000, mean(rbeta(2,2,1)) < z))
+```
+
+```{r}
+z <- 0.75
+F(z)
+mean(replicate(10000, mean(rbeta(2,2,1)) < z))
+```
+
+Not bad!
