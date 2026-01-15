@@ -6,7 +6,7 @@ editor: visual
 
 ## Beta distribution
 
-Recall that if $X$ has the *beta distribution* with shape parameters $\alpha$ and $\beta$, i.e., $X\sym\operatorname{Beta}(\alpha,\beta)$, then $X$ has probability density function
+Recall that if $X$ has the *beta distribution* with shape parameters $\alpha$ and $\beta$, i.e., $X\sim\operatorname{Beta}(\alpha,\beta)$, then $X$ has probability density function
 
 $$f_X(x) = \begin{cases}
 \frac{1}{B(\alpha)(\beta)}x^{\alpha - 1}(1 - x)^{\beta - 1} & \text{if }0 < x < 1 \\
@@ -16,7 +16,7 @@ $$
 where $B$ is the *beta function* given by
 $$B(\alpha,\beta) = \int_0^1x^{\alpha - 1}(1 - x)^{\beta - 1}\,dx = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha + \beta)}.$$
 
-We saw in class that if $X_1,X_2\sym\operatorname{Beta}(2, 1)$, then their sample mean $\overline X$ has cumulative distribution function
+We saw in class that if $X_1,X_2\sim\operatorname{Beta}(2, 1)$, then their sample mean $\overline X$ has cumulative distribution function
 $$
 F_{\overline X}(z) = \begin{cases}
 0 &\text{if }z \leq 0 \\
