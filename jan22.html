@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Variance of Dice – MATH 3310</title>
+<title>Computing various probabiltiies in R – MATH 3310</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,7 +148,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Variance of Dice</h1>
+<h1 class="title">Computing various probabiltiies in R</h1>
 </div>
 
 
@@ -165,123 +165,83 @@ window.Quarto = {
 </header>
 
 
-<section id="sampling" class="level2">
-<h2 class="anchored" data-anchor-id="sampling">Sampling</h2>
-<p>First, note that we may use the <code>sample</code> data from an arbitrary discrete distribution with relatively small support. Read <code>help(sample)</code> for more, but the basic gist is that we give it the support <code>x</code>, the <code>size</code> (number of samples), a boolean <code>replace</code> which tells us if we sample with replacement or not (we will almost always use <code>TRUE</code> here since we want our samples to be independent), and <code>prob</code> is essentially the probability mass function. In particular, the first element of <code>prob</code> is the probability of the first element of <code>x</code>, the second element of <code>prob</code> is the probability of the second element of <code>x</code> and so on. We construct <code>x</code> and <code>prob</code> using the “combine” function <code>c</code>. Note that we may omit <code>prob</code> if the distribution is uniform. In other words, the following are equivalent:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>We used the longer version in class, but we’ll use the shorter version in this document.</p>
-</section>
-<section id="sample-variance-of-2d6" class="level2">
-<h2 class="anchored" data-anchor-id="sample-variance-of-2d6">Sample Variance of 2d6</h2>
-<p>Recall our goal: to find the sample variance <span class="math inline">\(S^2\)</span> of 2d6, i.e, of i.i.d. random variables <span class="math inline">\(X_1,X_2\)</span> with the uniform distribution on <span class="math inline">\(\{1,2,3,4,5,6\}\)</span>.</p>
-<p>In class, we found that the probability mass function of <span class="math inline">\(S^2\)</span> is <span class="math display">\[
-f_{S^2}(x) = \begin{cases}
-\frac{1}{6} &amp;\text{if }x = 0 \\
-\frac{5}{18} &amp;\text{if }x = \frac{1}{2} \\
-\frac{2}{9} &amp;\text{if }x = 2 \\
-\frac{1}{6} &amp;\text{if }x = \frac{9}{2} \\
-\frac{1}{9} &amp;\text{if }x = 8 \\
-\frac{1}{18} &amp;\text{if }x = \frac{25}{2} \\
-0 &amp;\text{otherwise.}
-\end{cases}
-\]</span></p>
-<p>and that <span class="math inline">\(E(S^2) = \frac{35}{12}\)</span>, which happens to be equal to <span class="math inline">\(\operatorname{Var}(X_i)\)</span>.</p>
-</section>
-<section id="monte-carlo-simulations" class="level2">
-<h2 class="anchored" data-anchor-id="monte-carlo-simulations">Monte Carlo Simulations</h2>
-<p>First, let’s check the expected value. Recall that to perform a Monte Carlo simulation, we use <code>mean(replicate(...))</code> to run our code a bunch of times and find the average value.</p>
+<section id="chi-squared-distribution" class="level1">
+<h1>Chi-squared distribution</h1>
+<p>Suppose <span class="math inline">\(Z_1,\ldots,Z_5\sim N(0,1)\)</span> are independent random variables. Let’s find the probability that <span class="math inline">\(Z_1^2 + \cdots + Z_5^2\)</span> is at least 3, i.e., <span class="math inline">\(P(Z_1^2 + \cdots + Z_5^2 &gt; 3)\)</span>. This sum has distribution <span class="math inline">\(\chi^2(5)\)</span>. So if <span class="math inline">\(W\sim \chi^2(5)\)</span>, we can use <span class="math inline">\(P(W &gt; 3) = 1 - P(W \leq 3)\)</span>.</p>
+<p>In R, if we want to compute values of the cumulative distribution function of a particular distribution, we use a function beginning with <code>p</code>. In the case of the chi-squared distribution, that function is <code>pchiqsq</code>. In general if <span class="math inline">\(W\sim\chi^2(\nu)\)</span> and we want to compute <span class="math inline">\(P(W &lt; w)\)</span>, we use <code>pchiqsq(w, ν)</code>.</p>
+<p>So in this case, we have:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">var</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(<span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.9208</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span><span class="sc">/</span><span class="dv">12</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.916667</code></pre>
+<pre><code>[1] 0.6999858</code></pre>
 </div>
 </div>
-<p>Now let’s check the values of our probability mass function. Recall that by have a statement (e.g., <code>var(...) == 0</code>), <code>replicate(...)</code> spits out a bunch of booleans (<code>TRUE</code> and <code>FALSE)</code>, and <code>mean(...)</code> gives us the proportion of <code>TRUE</code>’s. This gives us an estimate of the probability of that particular value.</p>
+<p>Alternatively, we can skip the <code>1 -</code> and use the <code>lower.tail = FALSE</code> option to switch the direction of the inequality.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">var</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">==</span> <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1663</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="dv">6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1666667</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">var</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">==</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2669</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span><span class="sc">/</span><span class="dv">18</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2777778</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">var</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">==</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2144</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">/</span><span class="dv">9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2222222</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">var</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">==</span> <span class="dv">9</span><span class="sc">/</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1739</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="dv">6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1666667</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">var</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">==</span> <span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1141</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="dv">9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1111111</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">var</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dv">2</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="sc">==</span> <span class="dv">25</span><span class="sc">/</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0575</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="dv">18</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.05555556</code></pre>
+<pre><code>[1] 0.6999858</code></pre>
 </div>
 </div>
 </section>
-<section id="binomial-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-distribution">Binomial Distribution</h2>
-<p>We also started a second problem. Suppose <span class="math inline">\(X_1,X_2\sim B\left(3, \frac{1}{2}\right)\)</span>. We computed</p>
-<p><span class="math display">\[\begin{align}
-P(S^2 = 0) &amp;= \sum_{k=0}^3 P(X_1 = k)P(X_2=k) \\
-&amp;= \sum_{k=0}^3\left(\binom{3}{k}\left(\frac{1}{2}\right)^k\left(\frac{1}{2}\right)^{3-k}\right)^2 \\
-&amp;= \sum_{k=0}\binom{3}{k}^2\frac{1}{64}\\
-&amp;= \frac{1}{64}\left(1^2 + 3^2 + 3^2 + 1^3\right) \\
-&amp;= \frac{5}{16}
-\end{align}\]</span></p>
-<p>Let’s check this with a Monte Carlo simulation as well. We may use the <code>rbinom</code> function. It takes three arguments: the number of samples and then the <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span> from our binomial distribution. So we want to use <code>rbinom(2, 3, 1/2)</code>.</p>
+<section id="normal-distribution" class="level1">
+<h1>Normal distribution</h1>
+<p>Let’s say <span class="math inline">\(X_1,\ldots,X_{10}\sim N(1, 25)\)</span> are independent. (Note that this means <span class="math inline">\(\sigma^2 = 25\)</span> and so <span class="math inline">\(\sigma = 5\)</span>.) Find the probability that <span class="math inline">\(\overline X\)</span> is less than 2.</p>
+<p>We know that <span class="math inline">\(\dfrac{\overline X - \mu}{\sigma/\sqrt {n}}\sim N(0,1)\)</span>, and so if we say that <span class="math inline">\(Z\sim N(0,1)\)</span>, then we have:</p>
+<p><span class="math display">\[P(\overline X &lt; 2) = P\left(Z &lt; \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(Z &lt; \frac{\sqrt{10}}{5}\right)\]</span></p>
+<p>We can use the <code>pnorm</code> function to compute normal probabilities in R. In this case:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">var</span>(<span class="fu">rbinom</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)) <span class="sc">==</span> <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="fu">sqrt</span>(<span class="dv">10</span>)<span class="sc">/</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3135</code></pre>
+<pre><code>[1] 0.7364554</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span><span class="sc">/</span><span class="dv">16</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Alternatively, we can provide the mean and and standard deviation (of <span class="math inline">\(\overline X\)</span>, so <span class="math inline">\(\frac{\sigma}{\sqrt n}\)</span>) as additional arguments to <code>pnorm</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">5</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3125</code></pre>
+<pre><code>[1] 0.7364554</code></pre>
+</div>
+</div>
+</section>
+<section id="t-distribution" class="level1">
+<h1><span class="math inline">\(t\)</span>-distribution</h1>
+<p>Now let’s say that instead of a population variance of 25, we have a <em>sample</em> variance of 25. In this case, since we don’t know <span class="math inline">\(\sigma^2\)</span>, we can use the <span class="math inline">\(t\)</span>-distribution. In particular, we have <span class="math inline">\(\dfrac{\overline X - \mu}{S/\sqrt n} \sim t(n - 1)\)</span>.</p>
+<p>So if <span class="math inline">\(T\sim t(9)\)</span>, we can say that</p>
+<p><span class="math display">\[P(\overline X) &lt; 2) = P\left(T &lt; \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(T &lt; \frac{\sqrt{10}}{5}\right)\]</span></p>
+<p>We can use the <code>pt</code> function in R to compute these probabilities. In general, if <span class="math inline">\(T\sim t(\nu)\)</span> then we compute <span class="math inline">\(P(T &lt; t)\)</span> using <code>pt(t, ν)</code>. So in this case:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="fu">sqrt</span>(<span class="dv">10</span>)<span class="sc">/</span><span class="dv">5</span>, <span class="dv">9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7285895</code></pre>
+</div>
+</div>
+</section>
+<section id="quantile-functions" class="level1">
+<h1>Quantile functions</h1>
+<p>If <span class="math inline">\(X\)</span> is a continuous random variable with cumulative distribution function <span class="math inline">\(F_X\)</span>, then its <em>quantile function</em> is <span class="math inline">\(Q_X = F^{-1}_X\)</span>. In particular,</p>
+<p><span class="math display">\[P(X\leq x) = p \iff Q_X(p) = x.\]</span></p>
+<p>In R, we can compute quantile functions using functions beginning with <code>q</code>. Let’s work all of our previous examples backwards.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qchisq</span>(<span class="fl">0.6999858</span>, <span class="dv">5</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.7364554</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6324556</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">10</span>)<span class="sc">/</span><span class="dv">5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6324555</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.7285895</span>, <span class="dv">9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6324555</code></pre>
 </div>
 </div>
 
