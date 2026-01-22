@@ -49,7 +49,7 @@ Now let's say that instead of a population variance of 25, we have a *sample* va
 
 So if $T\sim t(9)$, we can say that
 
-$$P(\overline X) < 2) = P\left(T < \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(T < \frac{\sqrt{10}}{5}\right)$$
+$$P(\overline X < 2) = P\left(T < \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(T < \frac{\sqrt{10}}{5}\right)$$
 
 We can use the `pt` function in R to compute these probabilities.  In general, if $T\sim t(\nu)$ then we compute $P(T < t)$ using `pt(t, ν)`.  So in this case:
 
