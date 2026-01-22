@@ -1,0 +1,79 @@
+---
+title: "Computing various probabiltiies in R"
+format: html
+editor: visual
+---
+
+# Chi-squared distribution
+
+Suppose $Z_1,\ldots,Z_5\sim N(0,1)$ are independent random variables. Let's find the probability that $Z_1^2 + \cdots + Z_5^2$ is at least 3, i.e., $P(Z_1^2 + \cdots + Z_5^2 > 3)$. This sum has distribution $\chi^2(5)$. So if $W\sim \chi^2(5)$, we can use $P(W > 3) = 1 - P(W \leq 3)$.
+
+In R, if we want to compute values of the cumulative distribution function of a particular distribution, we use a function beginning with `p`.  In the case of the chi-squared distribution, that function is `pchiqsq`.  In general if $W\sim\chi^2(\nu)$ and we want to compute $P(W < w)$, we use `pchiqsq(w, ν)`.
+
+So in this case, we have:
+
+```{r}
+1 - pchisq(3, 5)
+```
+
+Alternatively, we can skip the `1 -` and use the `lower.tail = FALSE` option to switch the direction of the inequality.
+
+```{r}
+pchisq(3, 5, lower.tail = FALSE)
+```
+
+# Normal distribution
+
+Let's say $X_1,\ldots,X_{10}\sim N(1, 25)$ are independent.  (Note that this means $\sigma^2 = 25$ and so $\sigma = 5$.)  Find the probability that $\overline X$ is less than 2.
+
+
+We know that $\dfrac{\overline X - \mu}{\sigma/\sqrt {n}}\sim N(0,1)$, and so if we say that $Z\sim N(0,1)$, then we have:
+
+$$P(\overline X < 2) = P\left(Z < \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(Z < \frac{\sqrt{10}}{5}\right)$$
+
+We can use the `pnorm` function to compute normal probabilities in R.  In this case:
+
+```{r}
+pnorm(sqrt(10)/5)
+```
+
+Alternatively, we can provide the mean and and standard deviation (of $\overline X$, so $\frac{\sigma}{\sqrt n}$) as additional arguments to `pnorm`:
+
+```{r}
+pnorm(2, 1, 5/sqrt(10))
+```
+
+# $t$-distribution
+
+Now let's say that instead of a population variance of 25, we have a *sample* variance of 25.  In this case, since we don't know $\sigma^2$, we can use the $t$-distribution.  In particular, we have $\dfrac{\overline X - \mu}{S/\sqrt n} \sim t(n - 1)$.
+
+So if $T\sim t(9)$, we can say that
+
+$$P(\overline X) < 2) = P\left(T < \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(T < \frac{\sqrt{10}}{5}\right)$$
+
+We can use the `pt` function in R to compute these probabilities.  In general, if $T\sim t(\nu)$ then we compute $P(T < t)$ using `pt(t, ν)`.  So in this case:
+
+```{r}
+pt(sqrt(10)/5, 9)
+```
+
+# Quantile functions
+
+If $X$ is a continuous random variable with cumulative distribution function $F_X$, then its *quantile function* is $Q_X = F^{-1}_X$.  In particular,
+
+$$P(X\leq x) = p \iff Q_X(p) = x.$$
+
+In R, we can compute quantile functions using functions beginning with `q`.  Let's work all of our previous examples backwards.
+
+```{r}
+qchisq(0.6999858, 5, lower.tail = FALSE)
+```
+
+```{r}
+qnorm(0.7364554)
+sqrt(10)/5
+```
+
+```{r}
+qt(0.7285895, 9)
+```
