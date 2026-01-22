@@ -165,8 +165,8 @@ window.Quarto = {
 </header>
 
 
-<section id="chi-squared-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="chi-squared-distribution">Chi-squared distribution</h2>
+<section id="chi-squared-distribution" class="level1">
+<h1>Chi-squared distribution</h1>
 <p>Suppose <span class="math inline">\(Z_1,\ldots,Z_5\sim N(0,1)\)</span> are independent random variables. Let’s find the probability that <span class="math inline">\(Z_1^2 + \cdots + Z_5^2\)</span> is at least 3, i.e., <span class="math inline">\(P(Z_1^2 + \cdots + Z_5^2 &gt; 3)\)</span>. This sum has distribution <span class="math inline">\(\chi^2(5)\)</span>. So if <span class="math inline">\(W\sim \chi^2(5)\)</span>, we can use <span class="math inline">\(P(W &gt; 3) = 1 - P(W \leq 3)\)</span>.</p>
 <p>In R, if we want to compute values of the cumulative distribution function of a particular distribution, we use a function beginning with <code>p</code>. In the case of the chi-squared distribution, that function is <code>pchiqsq</code>. In general if <span class="math inline">\(W\sim\chi^2(\nu)\)</span> and we want to compute <span class="math inline">\(P(W &lt; w)\)</span>, we use <code>pchiqsq(w, ν)</code>.</p>
 <p>So in this case, we have:</p>
@@ -184,8 +184,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="normal-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="normal-distribution">Normal distribution</h2>
+<section id="normal-distribution" class="level1">
+<h1>Normal distribution</h1>
 <p>Let’s say <span class="math inline">\(X_1,\ldots,X_{10}\sim N(1, 25)\)</span> are independent. (Note that this means <span class="math inline">\(\sigma^2 = 25\)</span> and so <span class="math inline">\(\sigma = 5\)</span>.) Find the probability that <span class="math inline">\(\overline X\)</span> is less than 2.</p>
 <p>We know that <span class="math inline">\(\dfrac{\overline X - \mu}{\sigma/\sqrt {n}}\sim N(0,1)\)</span>, and so if we say that <span class="math inline">\(Z\sim N(0,1)\)</span>, then we have:</p>
 <p><span class="math display">\[P(\overline X &lt; 2) = P\left(Z &lt; \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(Z &lt; \frac{\sqrt{10}}{5}\right)\]</span></p>
@@ -204,8 +204,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="t-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="t-distribution"><span class="math inline">\(t\)</span>-distribution</h2>
+<section id="t-distribution" class="level1">
+<h1><span class="math inline">\(t\)</span>-distribution</h1>
 <p>Now let’s say that instead of a population variance of 25, we have a <em>sample</em> variance of 25. In this case, since we don’t know <span class="math inline">\(\sigma^2\)</span>, we can use the <span class="math inline">\(t\)</span>-distribution. In particular, we have <span class="math inline">\(\dfrac{\overline X - \mu}{S/\sqrt n} \sim t(n - 1)\)</span>.</p>
 <p>So if <span class="math inline">\(T\sim t(9)\)</span>, we can say that</p>
 <p><span class="math display">\[P(\overline X &lt; 2) = P\left(T &lt; \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(T &lt; \frac{\sqrt{10}}{5}\right)\]</span></p>
@@ -217,8 +217,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="quantile-functions" class="level2">
-<h2 class="anchored" data-anchor-id="quantile-functions">Quantile functions</h2>
+<section id="quantile-functions" class="level1">
+<h1>Quantile functions</h1>
 <p>If <span class="math inline">\(X\)</span> is a continuous random variable with cumulative distribution function <span class="math inline">\(F_X\)</span>, then its <em>quantile function</em> is <span class="math inline">\(Q_X = F^{-1}_X\)</span>. In particular,</p>
 <p><span class="math display">\[P(X\leq x) = p \iff Q_X(p) = x.\]</span></p>
 <p>In R, we can compute quantile functions using functions beginning with <code>q</code>. Let’s work all of our previous examples backwards.</p>

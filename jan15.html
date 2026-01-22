@@ -202,7 +202,7 @@ F_{\overline X}(z) = \begin{cases}
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7552967</code></pre>
+<pre><code>[1] 0.6443138</code></pre>
 </div>
 </div>
 <p>To perform our Monte Carlo simulation, we use <code>replicate</code> to perform the process a bunch of times. Each time, we compare to some value, yielding <code>TRUE</code> or <code>FALSE</code>, and then <code>mean</code> to find the proportion of <code>TRUE</code>’s. (Since <code>TRUE</code> is treated like 1 and <code>FALSE</code> like 0.)</p>
@@ -215,7 +215,7 @@ F_{\overline X}(z) = \begin{cases}
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.011</code></pre>
+<pre><code>[1] 0.0097</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -226,7 +226,7 @@ F_{\overline X}(z) = \begin{cases}
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1676</code></pre>
+<pre><code>[1] 0.1714</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -237,7 +237,7 @@ F_{\overline X}(z) = \begin{cases}
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbeta</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">&lt;</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6476</code></pre>
+<pre><code>[1] 0.6535</code></pre>
 </div>
 </div>
 <p>Not bad!</p>
