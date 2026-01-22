@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-# Chi-squared distribution
+## Chi-squared distribution
 
 Suppose $Z_1,\ldots,Z_5\sim N(0,1)$ are independent random variables. Let's find the probability that $Z_1^2 + \cdots + Z_5^2$ is at least 3, i.e., $P(Z_1^2 + \cdots + Z_5^2 > 3)$. This sum has distribution $\chi^2(5)$. So if $W\sim \chi^2(5)$, we can use $P(W > 3) = 1 - P(W \leq 3)$.
 
@@ -22,7 +22,7 @@ Alternatively, we can skip the `1 -` and use the `lower.tail = FALSE` option to 
 pchisq(3, 5, lower.tail = FALSE)
 ```
 
-# Normal distribution
+## Normal distribution
 
 Let's say $X_1,\ldots,X_{10}\sim N(1, 25)$ are independent.  (Note that this means $\sigma^2 = 25$ and so $\sigma = 5$.)  Find the probability that $\overline X$ is less than 2.
 
@@ -43,7 +43,7 @@ Alternatively, we can provide the mean and and standard deviation (of $\overline
 pnorm(2, 1, 5/sqrt(10))
 ```
 
-# $t$-distribution
+## $t$-distribution
 
 Now let's say that instead of a population variance of 25, we have a *sample* variance of 25.  In this case, since we don't know $\sigma^2$, we can use the $t$-distribution.  In particular, we have $\dfrac{\overline X - \mu}{S/\sqrt n} \sim t(n - 1)$.
 
@@ -57,7 +57,7 @@ We can use the `pt` function in R to compute these probabilities.  In general, i
 pt(sqrt(10)/5, 9)
 ```
 
-# Quantile functions
+## Quantile functions
 
 If $X$ is a continuous random variable with cumulative distribution function $F_X$, then its *quantile function* is $Q_X = F^{-1}_X$.  In particular,
 
