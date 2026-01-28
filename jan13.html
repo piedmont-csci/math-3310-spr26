@@ -178,15 +178,15 @@ F_{X_{(1)}}(x) &amp;= \int_0^x 2(1 - t)\,dt \\
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">10</span>, <span class="fu">min</span>(<span class="fu">runif</span>(<span class="dv">2</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 0.18220051 0.08341470 0.82029198 0.78173562 0.19031434 0.05013241
- [7] 0.78579310 0.15292924 0.46067461 0.65868462</code></pre>
+<pre><code> [1] 0.44519988 0.19834030 0.50367609 0.80073900 0.48878712 0.22295524
+ [7] 0.08962385 0.20017124 0.32319710 0.23224713</code></pre>
 </div>
 </div>
 <p>We’re interested in finding the number of our random samples that were less than 0.5. If we replicate a statement, we’ll get a list of a bunch of boolean (TRUE or FALSE) objects.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">10</span>, <span class="fu">min</span>(<span class="fu">runif</span>(<span class="dv">2</span>)) <span class="sc">&lt;</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE</code></pre>
+<pre><code> [1] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE</code></pre>
 </div>
 </div>
 <p>R treats these Boolean objects like integers (0 for FALSE and 1 for TRUE), so we can compute the proportion of TRUE’s by taking the mean:</p>
@@ -200,7 +200,7 @@ F_{X_{(1)}}(x) &amp;= \int_0^x 2(1 - t)\,dt \\
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">min</span>(<span class="fu">runif</span>(<span class="dv">2</span>)) <span class="sc">&lt;</span> <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7528</code></pre>
+<pre><code>[1] 0.7491</code></pre>
 </div>
 </div>
 <p>We got pretty close to our theoretical result of 0.75!</p>

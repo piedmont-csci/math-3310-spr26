@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Computing various probabiltiies in R – MATH 3310</title>
+<title>Statistical Tables and Graphics – MATH 3310</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,7 +148,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Computing various probabiltiies in R</h1>
+<h1 class="title">Statistical Tables and Graphics</h1>
 </div>
 
 
@@ -165,87 +165,180 @@ window.Quarto = {
 </header>
 
 
-<section id="chi-squared-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="chi-squared-distribution">Chi-squared distribution</h2>
-<p>Suppose <span class="math inline">\(Z_1,\ldots,Z_5\sim N(0,1)\)</span> are independent random variables. Let’s find the probability that <span class="math inline">\(Z_1^2 + \cdots + Z_5^2\)</span> is at least 3, i.e., <span class="math inline">\(P(Z_1^2 + \cdots + Z_5^2 &gt; 3)\)</span>. This sum has distribution <span class="math inline">\(\chi^2(5)\)</span>. So if <span class="math inline">\(W\sim \chi^2(5)\)</span>, we can use <span class="math inline">\(P(W &gt; 3) = 1 - P(W \leq 3)\)</span>.</p>
-<p>In R, if we want to compute values of the cumulative distribution function of a particular distribution, we use a function beginning with <code>p</code>. In the case of the chi-squared distribution, that function is <code>pchiqsq</code>. In general if <span class="math inline">\(W\sim\chi^2(\nu)\)</span> and we want to compute <span class="math inline">\(P(W &lt; w)\)</span>, we use <code>pchiqsq(w, ν)</code>.</p>
-<p>So in this case, we have:</p>
+<section id="frequency-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="frequency-distributions">Frequency Distributions</h2>
+<p>Don’t worry about the code used to generate these tables and graphs. It uses a programming language called “R” that is widely used by statisticians, but there there is absolutely no expectation for you to deal with it in this course.</p>
+<p>Consider our data set we generated in class during the first week. In particular, we’re going to look at the lengths of your favorite songs.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(<span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>class.data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"class-data.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(class.data<span class="sc">$</span>length_of_favorite_song)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6999858</code></pre>
+<pre><code> [1] 134 134 148 166 170 173 174 180 180 181 185 189 215 228 229 233 237 237 260
+[20] 297 371 480</code></pre>
 </div>
 </div>
-<p>Alternatively, we can skip the <code>1 -</code> and use the <code>lower.tail = FALSE</code> option to switch the direction of the inequality.</p>
+<p>As presented, it’s kind of overwhelming. How can we visualize this data set so that it’s more understandable?</p>
+<p>First, let’s break it up into <strong>classes</strong>. Since the smallest length is 134 s and the largest is 480 s, we’ll split the interval [130, 490] up into 12 classes of <strong>class width</strong> 30. Then we can construct a <strong>frequency table</strong>. The entries are the <strong>frequencies</strong> of each class, i.e., the number of elements in the data set in that class.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">130</span>, <span class="dv">490</span>, <span class="at">by =</span> <span class="dv">30</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>classes <span class="ot">&lt;-</span> <span class="fu">cut</span>(class.data<span class="sc">$</span>length_of_favorite_song, breaks, <span class="at">right =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">table</span>(classes))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6999858</code></pre>
+<pre><code>     classes Freq
+1  [130,160)    3
+2  [160,190)    9
+3  [190,220)    1
+4  [220,250)    5
+5  [250,280)    1
+6  [280,310)    1
+7  [310,340)    0
+8  [340,370)    0
+9  [370,400)    1
+10 [400,430)    0
+11 [430,460)    0
+12 [460,490)    1</code></pre>
+</div>
+</div>
+<p>In this case, the <strong>lower class limits</strong> are 130, 160, 190, …, 460, and the <strong>upper class limits</strong> are 159, 189, …, 489. (Note that in the table above, R confusingly prints 160, 190, etc as the upper endpoint of each class. But it’s using interval notation, and 159 is the largest <em>integer</em> in the interval [130, 160), 189 is the largest integer in [160, 190), etc.)</p>
+<p>The <strong>class boundaries</strong> are the midpoints of the adjacent upper and lower class limits, so in this case, 159.5, 189.5, …, 459.5. Note in particular that we do not consider outer endpoints.</p>
+<p>The <strong>class midpoints</strong> are the midpoints of each class, i.e., the average of the lower class limit and the upper class limit. So the first class has midpoint <span class="math inline">\(\frac{130 + 159}{2} = 144.5\)</span>.</p>
+<p>Next, let’s look at a <strong>relative frequency distribution</strong>. Here, the entries in each row correspond to the <em>proportion</em> (frequency divided by sample size, possibly given as a percent) in each class.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(classes)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     classes       Freq
+1  [130,160) 0.13636364
+2  [160,190) 0.40909091
+3  [190,220) 0.04545455
+4  [220,250) 0.22727273
+5  [250,280) 0.04545455
+6  [280,310) 0.04545455
+7  [310,340) 0.00000000
+8  [340,370) 0.00000000
+9  [370,400) 0.04545455
+10 [400,430) 0.00000000
+11 [430,460) 0.00000000
+12 [460,490) 0.04545455</code></pre>
+</div>
+</div>
+<p>Next, we have a <strong>cumulative frequency distribution</strong>, where entries in each row are the sums of the frequencies in all the classes up to that point.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">cumsum</span>(<span class="fu">table</span>(classes)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          cumsum(table(classes))
+[130,160)                      3
+[160,190)                     12
+[190,220)                     13
+[220,250)                     18
+[250,280)                     19
+[280,310)                     20
+[310,340)                     20
+[340,370)                     20
+[370,400)                     21
+[400,430)                     21
+[430,460)                     21
+[460,490)                     22</code></pre>
+</div>
+</div>
+<p>Finally, we have the <strong>relative cumulative frequency distribution</strong>, which is exactly what it sounds like – the proportions of the cumulative frequencies. Note that the final entry will always be 100%.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">cumsum</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(classes))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          cumsum(prop.table(table(classes)))
+[130,160)                          0.1363636
+[160,190)                          0.5454545
+[190,220)                          0.5909091
+[220,250)                          0.8181818
+[250,280)                          0.8636364
+[280,310)                          0.9090909
+[310,340)                          0.9090909
+[340,370)                          0.9090909
+[370,400)                          0.9545455
+[400,430)                          0.9545455
+[430,460)                          0.9545455
+[460,490)                          1.0000000</code></pre>
 </div>
 </div>
 </section>
-<section id="normal-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="normal-distribution">Normal distribution</h2>
-<p>Let’s say <span class="math inline">\(X_1,\ldots,X_{10}\sim N(1, 25)\)</span> are independent. (Note that this means <span class="math inline">\(\sigma^2 = 25\)</span> and so <span class="math inline">\(\sigma = 5\)</span>.) Find the probability that <span class="math inline">\(\overline X\)</span> is less than 2.</p>
-<p>We know that <span class="math inline">\(\dfrac{\overline X - \mu}{\sigma/\sqrt {n}}\sim N(0,1)\)</span>, and so if we say that <span class="math inline">\(Z\sim N(0,1)\)</span>, then we have:</p>
-<p><span class="math display">\[P(\overline X &lt; 2) = P\left(Z &lt; \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(Z &lt; \frac{\sqrt{10}}{5}\right)\]</span></p>
-<p>We can use the <code>pnorm</code> function to compute normal probabilities in R. In this case:</p>
+<section id="histograms" class="level2">
+<h2 class="anchored" data-anchor-id="histograms">Histograms</h2>
+<p>A nice visual representation of a frequency distribution is a <strong>histogram</strong>. Along the horizontal axis, we have the classes. And along the vertical axis, we have the frequencies. Over each class, we draw a bar whose height is the corresponding frequency.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="fu">sqrt</span>(<span class="dv">10</span>)<span class="sc">/</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7364554</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(class.data<span class="sc">$</span>length_of_favorite_song, breaks, <span class="at">right =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Favorite song lengths"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Histogram of favorite song lengths"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="graphs-1300_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>Alternatively, we can provide the mean and and standard deviation (of <span class="math inline">\(\overline X\)</span>, so <span class="math inline">\(\frac{\sigma}{\sqrt n}\)</span>) as additional arguments to <code>pnorm</code>:</p>
+</div>
+<p>This data set is <strong>skewed right</strong>. See the examples on p.&nbsp;41 of the textbook for a few other possibilities.</p>
+</section>
+<section id="other-statistical-graphics" class="level2">
+<h2 class="anchored" data-anchor-id="other-statistical-graphics">Other Statistical Graphics</h2>
+<p>There are a wide variety of statistical graphs touched on in Section 3.3 of our textbook. We’ll focus on two of them (which are the ones you’ll encounter in Homework 3).</p>
+<section id="stem-plots" class="level3">
+<h3 class="anchored" data-anchor-id="stem-plots">Stem plots</h3>
+<p>These are kind of like a sideways histogram where we use numbers instead of bars. Each row has 10’s place number as its heading and the rest of the entries are the numbers from the 1’s place. Naturally, it works best with 2-digit numbers.</p>
+<p>Let’s play with our data set a bit to turn it into two digit-numbers. In particular, we’ll divide by 10 and then round. So the new data set is of song lengths in <em>dekaseconds</em> (1 dekasecond = 10 seconds).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">5</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>song.length.in.dekaseconds <span class="ot">&lt;-</span> <span class="fu">round</span>(class.data<span class="sc">$</span>length_of_favorite_song <span class="sc">/</span> <span class="dv">10</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(song.length.in.dekaseconds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7364554</code></pre>
+<pre><code> [1] 13 13 15 17 17 17 17 18 18 18 18 19 22 23 23 23 24 24 26 30 37 48</code></pre>
+</div>
+</div>
+<p>Now let’s see a stem plot:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stem</span>(song.length.in.dekaseconds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  The decimal point is 1 digit(s) to the right of the |
+
+  1 | 335777788889
+  2 | 2333446
+  3 | 07
+  4 | 8</code></pre>
 </div>
 </div>
 </section>
-<section id="t-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="t-distribution"><span class="math inline">\(t\)</span>-distribution</h2>
-<p>Now let’s say that instead of a population variance of 25, we have a <em>sample</em> variance of 25. In this case, since we don’t know <span class="math inline">\(\sigma^2\)</span>, we can use the <span class="math inline">\(t\)</span>-distribution. In particular, we have <span class="math inline">\(\dfrac{\overline X - \mu}{S/\sqrt n} \sim t(n - 1)\)</span>.</p>
-<p>So if <span class="math inline">\(T\sim t(9)\)</span>, we can say that</p>
-<p><span class="math display">\[P(\overline X &lt; 2) = P\left(T &lt; \frac{2 - 1}{5/\sqrt{10}}\right) = P\left(T &lt; \frac{\sqrt{10}}{5}\right)\]</span></p>
-<p>We can use the <code>pt</code> function in R to compute these probabilities. In general, if <span class="math inline">\(T\sim t(\nu)\)</span> then we compute <span class="math inline">\(P(T &lt; t)\)</span> using <code>pt(t, ν)</code>. So in this case:</p>
+<section id="scatter-plots" class="level3">
+<h3 class="anchored" data-anchor-id="scatter-plots">Scatter plots</h3>
+<p>If we have paired numerical data, then we can plot points in the plane, making one variable the <span class="math inline">\(x\)</span>-coordinate and the other variable the <span class="math inline">\(y\)</span>-coordinate. This gives us a <strong>scatter plot</strong>.</p>
+<p>Let’s plot favorite song length against number of siblings.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="fu">sqrt</span>(<span class="dv">10</span>)<span class="sc">/</span><span class="dv">5</span>, <span class="dv">9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7285895</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(class.data<span class="sc">$</span>length_of_favorite_song, class.data<span class="sc">$</span>number_of_siblings,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Length of favorite song"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Number of siblings"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="graphs-1300_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="quantile-functions" class="level2">
-<h2 class="anchored" data-anchor-id="quantile-functions">Quantile functions</h2>
-<p>If <span class="math inline">\(X\)</span> is a continuous random variable with cumulative distribution function <span class="math inline">\(F_X\)</span>, then its <em>quantile function</em> is <span class="math inline">\(Q_X = F^{-1}_X\)</span>. In particular,</p>
-<p><span class="math display">\[P(X\leq x) = p \iff Q_X(p) = x.\]</span></p>
-<p>In R, we can compute quantile functions using functions beginning with <code>q</code>. Let’s work all of our previous examples backwards.</p>
+<section id="time-series-graphs" class="level3">
+<h3 class="anchored" data-anchor-id="time-series-graphs">Time series graphs</h3>
+<p>If we connect the dots in a scatter plot, we get a <em>line graph</em>. And if the <span class="math inline">\(x\)</span>-coordinates correspond to a particular time, then we get a <strong>time-series graph</strong>.</p>
+<p>We don’t really have any good data from our data set for a time series graph, so here’s one that’s built into R. The <code>AirPassengers</code> gives the monthly totals (in thousands) of international airline passengers from 1949 to 1960.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qchisq</span>(<span class="fl">0.6999858</span>, <span class="dv">5</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(AirPassengers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="graphs-1300_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.7364554</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6324556</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">10</span>)<span class="sc">/</span><span class="dv">5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6324555</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.7285895</span>, <span class="dv">9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6324555</code></pre>
 </div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
