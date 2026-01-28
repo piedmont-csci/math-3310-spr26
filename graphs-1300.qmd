@@ -1,0 +1,103 @@
+---
+title: Statistical Tables and Graphics
+format: html
+---
+
+## Frequency Distributions
+
+Don't worry about the code used to generate these tables and graphs.  It uses a programming language called "R" that is widely used by statisticians, but there there is absolutely no expectation for you to deal with it in this course.
+
+Consider our data set we generated in class during the first week.  In particular, we're going to look at the lengths of your favorite songs.
+
+```{r}
+class.data <- read.csv("class-data.csv")
+sort(class.data$length_of_favorite_song)
+```
+As presented, it's kind of overwhelming.  How can we visualize this data set so that it's more understandable?
+
+First, let's break it up into **classes**.  Since the smallest length is 134 s and the largest is 480 s, we'll split the interval [130, 490] up into 12 classes of **class width** 30.  Then we can construct a **frequency table**.  The entries are the **frequencies** of each class, i.e., the number of elements in the data set in that class.
+
+```{r}
+breaks <- seq(130, 490, by = 30)
+classes <- cut(class.data$length_of_favorite_song, breaks, right = FALSE)
+as.data.frame(table(classes))
+```
+
+In this case, the **lower class limits** are 130, 160, 190, ..., 460, and the **upper class limits** are 159, 189, ..., 489.  (Note that in the table above, R confusingly prints 160, 190, etc as the upper endpoint of each class.  But it's using interval notation, and 159 is the largest *integer* in the interval [130, 160), 189 is the largest integer in [160, 190), etc.)
+
+The **class boundaries** are the midpoints of the adjacent upper and lower class limits, so in this case, 159.5, 189.5, ..., 459.5.  Note in particular that we do not consider outer endpoints.
+
+The **class midpoints** are the midpoints of each class, i.e., the average of the lower class limit and the upper class limit.  So the first class has midpoint $\frac{130 + 159}{2} = 144.5$.
+
+Next, let's look at a **relative frequency distribution**.  Here, the entries in each row correspond to the *proportion* (frequency divided by sample size, possibly given as a percent) in each class.
+
+```{r}
+as.data.frame(prop.table(table(classes)))
+```
+
+Next, we have a **cumulative frequency distribution**, where entries in each row are the sums of the frequencies in all the classes up to that point.
+
+```{r}
+as.data.frame(cumsum(table(classes)))
+```
+
+Finally, we have the **relative cumulative frequency distribution**, which is exactly what it sounds like -- the proportions of the cumulative frequencies.  Note that the final entry will always be 100%.
+
+```{r}
+as.data.frame(cumsum(prop.table(table(classes))))
+```
+
+## Histograms
+
+A nice visual representation of a frequency distribution is a **histogram**.  Along the horizontal axis, we have the classes.  And along the vertical axis, we have the frequencies.  Over each class, we draw a bar whose height is the corresponding frequency.
+
+```{r}
+hist(class.data$length_of_favorite_song, breaks, right = FALSE,
+     xlab = "Favorite song lengths",
+     main = "Histogram of favorite song lengths")
+```
+
+This data set is **skewed right**.  See the examples on p. 41 of the textbook for a few other possibilities.
+
+## Other Statistical Graphics
+
+There are a wide variety of statistical graphs touched on in Section 3.3 of our textbook.  We'll focus on two of them (which are the ones you'll encounter in Homework 3).
+
+### Stem plots
+
+These are kind of like a sideways histogram where we use numbers instead of bars.  Each row has 10's place number as its heading and the rest of the entries are the numbers from the 1's place.  Naturally, it works best with 2-digit numbers.
+
+Let's play with our data set a bit to turn it into two digit-numbers.  In particular, we'll divide by 10 and then round.  So the new data set is of song lengths in *dekaseconds* (1 dekasecond = 10 seconds).
+
+```{r}
+song.length.in.dekaseconds <- round(class.data$length_of_favorite_song / 10)
+sort(song.length.in.dekaseconds)
+```
+
+Now let's see a stem plot:
+
+```{r}
+stem(song.length.in.dekaseconds)
+```
+
+### Scatter plots
+
+If we have paired numerical data, then we can plot points in the plane, making one variable the $x$-coordinate and the other variable the $y$-coordinate.  This gives us a **scatter plot**.
+
+Let's plot favorite song length against number of siblings.
+
+```{r}
+plot(class.data$length_of_favorite_song, class.data$number_of_siblings,
+     xlab = "Length of favorite song",
+     ylab = "Number of siblings")
+```
+
+### Time series graphs
+
+If we connect the dots in a scatter plot, we get a *line graph*.  And if the $x$-coordinates correspond to a particular time, then we get a **time-series graph**.
+
+We don't really have any good data from our data set for a time series graph, so here's one that's built into R.  The `AirPassengers` gives the monthly totals (in thousands) of international airline passengers from 1949 to 1960.
+
+```{r}
+plot(AirPassengers)
+```
