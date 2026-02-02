@@ -1,0 +1,52 @@
+---
+title: Test 1 Monte Carlo simulations
+format: html
+editor: visual
+---
+
+## Problem 1
+
+Let's check for $n\in\{2,\ldots,10\}$.
+
+```{r}
+c(1/2^2, mean(replicate(10000, max(rbinom(2, 1, 1/2)) == 0)))
+c(1/2^3, mean(replicate(10000, max(rbinom(3, 1, 1/2)) == 0)))
+c(1/2^4, mean(replicate(10000, max(rbinom(4, 1, 1/2)) == 0)))
+c(1/2^5, mean(replicate(10000, max(rbinom(5, 1, 1/2)) == 0)))
+c(1/2^6, mean(replicate(10000, max(rbinom(6, 1, 1/2)) == 0)))
+c(1/2^7, mean(replicate(10000, max(rbinom(7, 1, 1/2)) == 0)))
+c(1/2^8, mean(replicate(10000, max(rbinom(8, 1, 1/2)) == 0)))
+c(1/2^9, mean(replicate(10000, max(rbinom(9, 1, 1/2)) == 0)))
+c(1/2^10, mean(replicate(10000, max(rbinom(10, 1, 1/2)) == 0)))
+```
+
+## Problem 2
+
+```{r}
+mean(replicate(10000, mean(rbinom(2, 2, 1/4)) == 1))
+```
+
+## Problem 3
+
+
+```{r}
+mean(replicate(10000, var(runif(2)) < 1/8))
+```
+
+## Problem 4
+
+```{r}
+mean(replicate(10000, mean(rnorm(20)^2) > 0.47955))
+```
+
+## Problem 5
+
+Since we don't know $\sigma^2$, let's try a few different values and ensure we get the same thing.
+
+```{r}
+mean(replicate(10000, {x <- rnorm(16); mean(x) > 0.93325 * sd(x)}))
+mean(replicate(10000, {x <- rnorm(16, 0, 4); mean(x) > 0.93325 * sd(x)}))
+mean(replicate(10000, {x <- rnorm(16, 0, 9); mean(x) > 0.93325 * sd(x)}))
+mean(replicate(10000, {x <- rnorm(16, 0, 16); mean(x) > 0.93325 * sd(x)}))
+mean(replicate(10000, {x <- rnorm(16, 0, 25); mean(x) > 0.93325 * sd(x)}))
+```
