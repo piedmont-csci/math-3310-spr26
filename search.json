@@ -25,21 +25,21 @@
     "href": "jan20.html#monte-carlo-simulations",
     "title": "Variance of Dice",
     "section": "Monte Carlo Simulations",
-    "text": "Monte Carlo Simulations\nFirst, let’s check the expected value. Recall that to perform a Monte Carlo simulation, we use mean(replicate(...)) to run our code a bunch of times and find the average value.\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE))))\n\n[1] 2.891\n\n35/12\n\n[1] 2.916667\n\n\nNow let’s check the values of our probability mass function. Recall that by have a statement (e.g., var(...) == 0), replicate(...) spits out a bunch of booleans (TRUE and FALSE), and mean(...) gives us the proportion of TRUE’s. This gives us an estimate of the probability of that particular value.\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 0))\n\n[1] 0.1697\n\n1/6\n\n[1] 0.1666667\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 1/2))\n\n[1] 0.2844\n\n5/18\n\n[1] 0.2777778\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 2))\n\n[1] 0.2245\n\n2/9\n\n[1] 0.2222222\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 9/2))\n\n[1] 0.1648\n\n1/6\n\n[1] 0.1666667\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 8))\n\n[1] 0.1074\n\n1/9\n\n[1] 0.1111111\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 25/2))\n\n[1] 0.0541\n\n1/18\n\n[1] 0.05555556"
+    "text": "Monte Carlo Simulations\nFirst, let’s check the expected value. Recall that to perform a Monte Carlo simulation, we use mean(replicate(...)) to run our code a bunch of times and find the average value.\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE))))\n\n[1] 2.9717\n\n35/12\n\n[1] 2.916667\n\n\nNow let’s check the values of our probability mass function. Recall that by have a statement (e.g., var(...) == 0), replicate(...) spits out a bunch of booleans (TRUE and FALSE), and mean(...) gives us the proportion of TRUE’s. This gives us an estimate of the probability of that particular value.\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 0))\n\n[1] 0.1677\n\n1/6\n\n[1] 0.1666667\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 1/2))\n\n[1] 0.2815\n\n5/18\n\n[1] 0.2777778\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 2))\n\n[1] 0.2213\n\n2/9\n\n[1] 0.2222222\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 9/2))\n\n[1] 0.1689\n\n1/6\n\n[1] 0.1666667\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 8))\n\n[1] 0.1086\n\n1/9\n\n[1] 0.1111111\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 25/2))\n\n[1] 0.057\n\n1/18\n\n[1] 0.05555556"
   },
   {
     "objectID": "jan20.html#binomial-distribution",
     "href": "jan20.html#binomial-distribution",
     "title": "Variance of Dice",
     "section": "Binomial Distribution",
-    "text": "Binomial Distribution\nWe also started a second problem. Suppose \\(X_1,X_2\\sim B\\left(3, \\frac{1}{2}\\right)\\). We computed\n\\[\\begin{align}\nP(S^2 = 0) &= \\sum_{k=0}^3 P(X_1 = k)P(X_2=k) \\\\\n&= \\sum_{k=0}^3\\left(\\binom{3}{k}\\left(\\frac{1}{2}\\right)^k\\left(\\frac{1}{2}\\right)^{3-k}\\right)^2 \\\\\n&= \\sum_{k=0}\\binom{3}{k}^2\\frac{1}{64}\\\\\n&= \\frac{1}{64}\\left(1^2 + 3^2 + 3^2 + 1^3\\right) \\\\\n&= \\frac{5}{16}\n\\end{align}\\]\nLet’s check this with a Monte Carlo simulation as well. We may use the rbinom function. It takes three arguments: the number of samples and then the \\(n\\) and \\(p\\) from our binomial distribution. So we want to use rbinom(2, 3, 1/2).\n\nmean(replicate(10000, var(rbinom(2, 3, 1/2)) == 0))\n\n[1] 0.3152\n\n5/16\n\n[1] 0.3125"
+    "text": "Binomial Distribution\nWe also started a second problem. Suppose \\(X_1,X_2\\sim B\\left(3, \\frac{1}{2}\\right)\\). We computed\n\\[\\begin{align}\nP(S^2 = 0) &= \\sum_{k=0}^3 P(X_1 = k)P(X_2=k) \\\\\n&= \\sum_{k=0}^3\\left(\\binom{3}{k}\\left(\\frac{1}{2}\\right)^k\\left(\\frac{1}{2}\\right)^{3-k}\\right)^2 \\\\\n&= \\sum_{k=0}\\binom{3}{k}^2\\frac{1}{64}\\\\\n&= \\frac{1}{64}\\left(1^2 + 3^2 + 3^2 + 1^3\\right) \\\\\n&= \\frac{5}{16}\n\\end{align}\\]\nLet’s check this with a Monte Carlo simulation as well. We may use the rbinom function. It takes three arguments: the number of samples and then the \\(n\\) and \\(p\\) from our binomial distribution. So we want to use rbinom(2, 3, 1/2).\n\nmean(replicate(10000, var(rbinom(2, 3, 1/2)) == 0))\n\n[1] 0.3095\n\n5/16\n\n[1] 0.3125"
   },
   {
     "objectID": "jan13.html",
     "href": "jan13.html",
     "title": "Monte Carlo Simulations",
     "section": "",
-    "text": "Recall that we found that if \\(X_1, X_2\\sim U(0, 1)\\), then the minimum \\(X_{(1)}\\) has probability density function \\(f_{X_{(1)}}(x) = 2(1-x)\\). Integrating, its cumulative distribution function (on the unit interval) is \\[\\begin{align}\nF_{X_{(1)}}(x) &= \\int_0^x 2(1 - t)\\,dt \\\\\n&= -(1-t)^2\\Big|_0^x \\\\\n&= -(1-x)^2 + (1 - 0)^2 \\\\\n&= -1 + 2x - x^2 + 1 \\\\\n&= -x^2 + 2x\n\\end{align}\\]\nLet’s check this with some Monte Carlo simulations. For example, we should expect that the probability that our minimum is less than \\(\\frac{1}{2}\\) is\n\\[F_{X_{(1)}}(0.5) = -0.5^2 + 2\\cdot 0.5 = 0.75\\]\nRecall that runif(2) will generate a random sample from our, and min(runif(2)) will give us the minimum. We can do this multiple times with replicate:\n\nreplicate(10, min(runif(2)))\n\n [1] 0.44519988 0.19834030 0.50367609 0.80073900 0.48878712 0.22295524\n [7] 0.08962385 0.20017124 0.32319710 0.23224713\n\n\nWe’re interested in finding the number of our random samples that were less than 0.5. If we replicate a statement, we’ll get a list of a bunch of boolean (TRUE or FALSE) objects.\n\nreplicate(10, min(runif(2)) &lt; 0.5)\n\n [1] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE\n\n\nR treats these Boolean objects like integers (0 for FALSE and 1 for TRUE), so we can compute the proportion of TRUE’s by taking the mean:\n\nmean(replicate(10, min(runif(2)) &lt; 0.5))\n\n[1] 0.9\n\n\nNow let’s increase the sample size:\n\nmean(replicate(10000, min(runif(2)) &lt; 0.5))\n\n[1] 0.7491\n\n\nWe got pretty close to our theoretical result of 0.75!"
+    "text": "Recall that we found that if \\(X_1, X_2\\sim U(0, 1)\\), then the minimum \\(X_{(1)}\\) has probability density function \\(f_{X_{(1)}}(x) = 2(1-x)\\). Integrating, its cumulative distribution function (on the unit interval) is \\[\\begin{align}\nF_{X_{(1)}}(x) &= \\int_0^x 2(1 - t)\\,dt \\\\\n&= -(1-t)^2\\Big|_0^x \\\\\n&= -(1-x)^2 + (1 - 0)^2 \\\\\n&= -1 + 2x - x^2 + 1 \\\\\n&= -x^2 + 2x\n\\end{align}\\]\nLet’s check this with some Monte Carlo simulations. For example, we should expect that the probability that our minimum is less than \\(\\frac{1}{2}\\) is\n\\[F_{X_{(1)}}(0.5) = -0.5^2 + 2\\cdot 0.5 = 0.75\\]\nRecall that runif(2) will generate a random sample from our, and min(runif(2)) will give us the minimum. We can do this multiple times with replicate:\n\nreplicate(10, min(runif(2)))\n\n [1] 0.36046198 0.07537424 0.13105767 0.35018675 0.87066488 0.29702777\n [7] 0.20476516 0.16325192 0.02583178 0.57832267\n\n\nWe’re interested in finding the number of our random samples that were less than 0.5. If we replicate a statement, we’ll get a list of a bunch of boolean (TRUE or FALSE) objects.\n\nreplicate(10, min(runif(2)) &lt; 0.5)\n\n [1]  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE\n\n\nR treats these Boolean objects like integers (0 for FALSE and 1 for TRUE), so we can compute the proportion of TRUE’s by taking the mean:\n\nmean(replicate(10, min(runif(2)) &lt; 0.5))\n\n[1] 0.9\n\n\nNow let’s increase the sample size:\n\nmean(replicate(10000, min(runif(2)) &lt; 0.5))\n\n[1] 0.7513\n\n\nWe got pretty close to our theoretical result of 0.75!"
   },
   {
     "objectID": "jan8.html",
@@ -67,7 +67,49 @@
     "href": "jan15.html#monte-carlo-simulation",
     "title": "Monte Carlo simulations for the beta distribution",
     "section": "Monte Carlo simulation",
-    "text": "Monte Carlo simulation\nFirst, let’s define an R function to evaluate our cdf from above:\n\nF &lt;- function(z) {\n  if (z &lt;= 0) {\n    return(0)\n  } else if (z &lt;= 1/2) {\n    return(8/3 * z^4)\n  } else if (z &lt; 1 ) {\n    return (-8/3 * z^4 + 8*z^2 - 16/3*z + 1)\n  } else {\n    return(1)\n  }\n}\n\nNext, we can use R to generate a random sample of \\(\\overline X\\) by first using rbeta(2, 2, 1) to generate 2 random samples from a \\(\\operatorname{Beta}(2, 1)\\) distribution, and then mean to find their sample mean.\n\nmean(rbeta(2,2,1))\n\n[1] 0.8306832\n\n\nTo perform our Monte Carlo simulation, we use replicate to perform the process a bunch of times. Each time, we compare to some value, yielding TRUE or FALSE, and then mean to find the proportion of TRUE’s. (Since TRUE is treated like 1 and FALSE like 0.)\nLet’s choose several different choices for \\(z\\) and compare the theoretical results with our simulated results.\n\nz &lt;- 0.25\nF(z)\n\n[1] 0.01041667\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.0097\n\n\n\nz &lt;- 0.5\nF(z)\n\n[1] 0.1666667\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.169\n\n\n\nz &lt;- 0.75\nF(z)\n\n[1] 0.65625\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.66\n\n\nNot bad!"
+    "text": "Monte Carlo simulation\nFirst, let’s define an R function to evaluate our cdf from above:\n\nF &lt;- function(z) {\n  if (z &lt;= 0) {\n    return(0)\n  } else if (z &lt;= 1/2) {\n    return(8/3 * z^4)\n  } else if (z &lt; 1 ) {\n    return (-8/3 * z^4 + 8*z^2 - 16/3*z + 1)\n  } else {\n    return(1)\n  }\n}\n\nNext, we can use R to generate a random sample of \\(\\overline X\\) by first using rbeta(2, 2, 1) to generate 2 random samples from a \\(\\operatorname{Beta}(2, 1)\\) distribution, and then mean to find their sample mean.\n\nmean(rbeta(2,2,1))\n\n[1] 0.4507424\n\n\nTo perform our Monte Carlo simulation, we use replicate to perform the process a bunch of times. Each time, we compare to some value, yielding TRUE or FALSE, and then mean to find the proportion of TRUE’s. (Since TRUE is treated like 1 and FALSE like 0.)\nLet’s choose several different choices for \\(z\\) and compare the theoretical results with our simulated results.\n\nz &lt;- 0.25\nF(z)\n\n[1] 0.01041667\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.0095\n\n\n\nz &lt;- 0.5\nF(z)\n\n[1] 0.1666667\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.1644\n\n\n\nz &lt;- 0.75\nF(z)\n\n[1] 0.65625\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.6622\n\n\nNot bad!"
+  },
+  {
+    "objectID": "test1.html",
+    "href": "test1.html",
+    "title": "Test 1 Monte Carlo simulations",
+    "section": "",
+    "text": "Let’s check for \\(n\\in\\{2,\\ldots,10\\}\\).\n\nc(1/2^2, mean(replicate(10000, max(rbinom(2, 1, 1/2)) == 0)))\n\n[1] 0.2500 0.2475\n\nc(1/2^3, mean(replicate(10000, max(rbinom(3, 1, 1/2)) == 0)))\n\n[1] 0.1250 0.1216\n\nc(1/2^4, mean(replicate(10000, max(rbinom(4, 1, 1/2)) == 0)))\n\n[1] 0.0625 0.0669\n\nc(1/2^5, mean(replicate(10000, max(rbinom(5, 1, 1/2)) == 0)))\n\n[1] 0.03125 0.02960\n\nc(1/2^6, mean(replicate(10000, max(rbinom(6, 1, 1/2)) == 0)))\n\n[1] 0.015625 0.014200\n\nc(1/2^7, mean(replicate(10000, max(rbinom(7, 1, 1/2)) == 0)))\n\n[1] 0.0078125 0.0086000\n\nc(1/2^8, mean(replicate(10000, max(rbinom(8, 1, 1/2)) == 0)))\n\n[1] 0.00390625 0.00470000\n\nc(1/2^9, mean(replicate(10000, max(rbinom(9, 1, 1/2)) == 0)))\n\n[1] 0.001953125 0.001300000\n\nc(1/2^10, mean(replicate(10000, max(rbinom(10, 1, 1/2)) == 0)))\n\n[1] 0.0009765625 0.0009000000"
+  },
+  {
+    "objectID": "test1.html#problem-1",
+    "href": "test1.html#problem-1",
+    "title": "Test 1 Monte Carlo simulations",
+    "section": "",
+    "text": "Let’s check for \\(n\\in\\{2,\\ldots,10\\}\\).\n\nc(1/2^2, mean(replicate(10000, max(rbinom(2, 1, 1/2)) == 0)))\n\n[1] 0.2500 0.2475\n\nc(1/2^3, mean(replicate(10000, max(rbinom(3, 1, 1/2)) == 0)))\n\n[1] 0.1250 0.1216\n\nc(1/2^4, mean(replicate(10000, max(rbinom(4, 1, 1/2)) == 0)))\n\n[1] 0.0625 0.0669\n\nc(1/2^5, mean(replicate(10000, max(rbinom(5, 1, 1/2)) == 0)))\n\n[1] 0.03125 0.02960\n\nc(1/2^6, mean(replicate(10000, max(rbinom(6, 1, 1/2)) == 0)))\n\n[1] 0.015625 0.014200\n\nc(1/2^7, mean(replicate(10000, max(rbinom(7, 1, 1/2)) == 0)))\n\n[1] 0.0078125 0.0086000\n\nc(1/2^8, mean(replicate(10000, max(rbinom(8, 1, 1/2)) == 0)))\n\n[1] 0.00390625 0.00470000\n\nc(1/2^9, mean(replicate(10000, max(rbinom(9, 1, 1/2)) == 0)))\n\n[1] 0.001953125 0.001300000\n\nc(1/2^10, mean(replicate(10000, max(rbinom(10, 1, 1/2)) == 0)))\n\n[1] 0.0009765625 0.0009000000"
+  },
+  {
+    "objectID": "test1.html#problem-2",
+    "href": "test1.html#problem-2",
+    "title": "Test 1 Monte Carlo simulations",
+    "section": "Problem 2",
+    "text": "Problem 2\n\nmean(replicate(10000, mean(rbinom(2, 2, 1/4)) == 1))\n\n[1] 0.2114"
+  },
+  {
+    "objectID": "test1.html#problem-3",
+    "href": "test1.html#problem-3",
+    "title": "Test 1 Monte Carlo simulations",
+    "section": "Problem 3",
+    "text": "Problem 3\n\nmean(replicate(10000, var(runif(2)) &lt; 1/8))\n\n[1] 0.7445"
+  },
+  {
+    "objectID": "test1.html#problem-4",
+    "href": "test1.html#problem-4",
+    "title": "Test 1 Monte Carlo simulations",
+    "section": "Problem 4",
+    "text": "Problem 4\n\nmean(replicate(10000, mean(rnorm(20)^2) &gt; 0.47955))\n\n[1] 0.9758"
+  },
+  {
+    "objectID": "test1.html#problem-5",
+    "href": "test1.html#problem-5",
+    "title": "Test 1 Monte Carlo simulations",
+    "section": "Problem 5",
+    "text": "Problem 5\nSince we don’t know \\(\\sigma^2\\), let’s try a few different values and ensure we get the same thing.\n\nmean(replicate(10000, {x &lt;- rnorm(16); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 0.0014\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 4); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 8e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 9); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 9e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 16); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 0.001\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 25); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 8e-04"
   },
   {
     "objectID": "graphs-1300.html",
