@@ -6,7 +6,7 @@ editor: visual
 
 Let's suppose that $X_i\sim B(20, 0.67)$. Our goal is to estimate $n=20$ and $p = 0.67$.
 
-We found in class the method of moments estimators $\hat p = 1 - \frac{M2 - M1^2}{M1}$ and $\hat n = \frac{M1}{\hat p}$. Now let's generate a bunch of random binomially distributed data with the parameters that we secretly know and see how well we did.
+We found in class the method of moments estimators $\hat p = 1 - \frac{M_2 - M_1^2}{M1}$ and $\hat n = \frac{M_1}{\hat p}$. Now let's generate a bunch of random binomially distributed data with the parameters that we secretly know and see how well we did.
 
 ```{r}
 x <- rbinom(1000, 20, 0.67)
@@ -19,7 +19,7 @@ c(nHat, pHat)
 
 Now suppose $X_i\sim U(2, 28)$. Our goal is to estimate $a = 2$ and $b = 28$.
 
-We found in class the method of moments estimators $\hat a = M1 - \sqrt{3M_2 - 3M_1^2}$ and $\hat b = M1 + \sqrt{3M_2 - 3M_1^2}$. Let see how we did:
+We found in class the method of moments estimators $\hat a = M_1 - \sqrt{3M_2 - 3M_1^2}$ and $\hat b = M_1 + \sqrt{3M_2 - 3M_1^2}$. Let see how we did:
 
 ```{r}
 x <- runif(1000, 2, 28)
