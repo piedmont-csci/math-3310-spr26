@@ -166,7 +166,7 @@ window.Quarto = {
 
 
 <p>Let’s suppose that <span class="math inline">\(X_i\sim B(20, 0.67)\)</span>. Our goal is to estimate <span class="math inline">\(n=20\)</span> and <span class="math inline">\(p = 0.67\)</span>.</p>
-<p>We found in class the method of moments estimators <span class="math inline">\(\hat p = 1 - \frac{M2 - M1^2}{M1}\)</span> and <span class="math inline">\(\hat n = \frac{M1}{\hat p}\)</span>. Now let’s generate a bunch of random binomially distributed data with the parameters that we secretly know and see how well we did.</p>
+<p>We found in class the method of moments estimators <span class="math inline">\(\hat p = 1 - \frac{M_2 - M_1^2}{M1}\)</span> and <span class="math inline">\(\hat n = \frac{M_1}{\hat p}\)</span>. Now let’s generate a bunch of random binomially distributed data with the parameters that we secretly know and see how well we did.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1000</span>, <span class="dv">20</span>, <span class="fl">0.67</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
@@ -175,11 +175,11 @@ window.Quarto = {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>nHat <span class="ot">&lt;-</span> M1 <span class="sc">/</span> pHat</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(nHat, pHat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 20.3316569  0.6578411</code></pre>
+<pre><code>[1] 19.4964513  0.6800725</code></pre>
 </div>
 </div>
 <p>Now suppose <span class="math inline">\(X_i\sim U(2, 28)\)</span>. Our goal is to estimate <span class="math inline">\(a = 2\)</span> and <span class="math inline">\(b = 28\)</span>.</p>
-<p>We found in class the method of moments estimators <span class="math inline">\(\hat a = M1 - \sqrt{3M_2 - 3M_1^2}\)</span> and <span class="math inline">\(\hat b = M1 + \sqrt{3M_2 - 3M_1^2}\)</span>. Let see how we did:</p>
+<p>We found in class the method of moments estimators <span class="math inline">\(\hat a = M_1 - \sqrt{3M_2 - 3M_1^2}\)</span> and <span class="math inline">\(\hat b = M_1 + \sqrt{3M_2 - 3M_1^2}\)</span>. Let see how we did:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>, <span class="dv">2</span>, <span class="dv">28</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
@@ -188,7 +188,7 @@ window.Quarto = {
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>bHat <span class="ot">&lt;-</span> M1 <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">3</span><span class="sc">*</span>M2 <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>M1<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(aHat, bHat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]  1.826145 27.958522</code></pre>
+<pre><code>[1]  2.355046 28.305103</code></pre>
 </div>
 </div>
 
