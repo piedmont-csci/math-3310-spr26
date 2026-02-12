@@ -1,0 +1,63 @@
+---
+title: "Maximum Likelihood Estimators"
+format: html
+editor: visual
+---
+
+## Exponential distribution
+
+Recall from class that we found that the maximum likelihood estimator for the rate parameter $\lambda$ in the exponential distribution $\operatorname{Exp}(\lambda)$ is $\hat\lambda = \frac{1}{\overline X}$.
+
+Let's see how we did.  We'll generate 1000 random samples from an $\operatorname{Exp}{(54)}$ distribution to see how we did.
+
+```{r}
+x <- rexp(1000, 54)
+lambdaHat <- 1/mean(x)
+lambdaHat
+```
+
+Let's also examine it graphically by plotting:
+
+a. the "empiricial cumulative distribution function", which gives us the proportion of the data in our data set bounded above by the given value.  The `plot.ecdf` function gives us this.
+
+b. the cumulative distribution function of an exponential distribution with our estimate $\hat\lambda$ as its rate parameter.  We first create two vectors, `xx` (which contains all values between 0 and 0.15, going up by 0.01) and `yy` (which we get by plugging all the elements of `xx` into the cdf of our estimated distribution), and plot them using the `lines` function.
+
+```{r}
+plot.ecdf(x)
+xx <- seq(0, 0.15, 0.01)
+yy <- pexp(xx, lambdaHat)
+lines(xx, yy, col="red")
+```
+
+Now let's do the same thing for our other two examples.
+
+## Poisson distribution
+
+```{r}
+x <- rpois(1000, 54)
+lambdaHat <- mean(x)
+lambdaHat
+plot.ecdf(x)
+xx <- seq(30, 80)
+yy <- ppois(xx, 54)
+lines(xx, yy, col="blue")
+```
+
+## Normal distribution
+
+```{r}
+x <- rnorm(1000, 5, 4)
+muHat <- mean(x)
+sigmasqHat <- 999/1000 * var(x)
+c(muHat, sigmasqHat)
+```
+
+
+Note that the third argument to `rnorm`  specifies the standard deviation $\sigma$ and not the variance $\sigma^2$, so we got an estimate of $4^2 = 16$.
+
+```{r}
+plot.ecdf(x)
+xx <- seq(-10, 20)
+yy <- pnorm(xx, 5, 4)
+lines(xx, yy, col="green")
+```
