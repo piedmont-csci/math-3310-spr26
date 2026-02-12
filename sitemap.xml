@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://piedmont-csci.github.io/math-3310-spr26/feb5.html</loc>
-    <lastmod>2026-02-09T16:07:54.350Z</lastmod>
-  </url>
-  <url>
-    <loc>https://piedmont-csci.github.io/math-3310-spr26/jan22.html</loc>
-    <lastmod>2026-02-09T16:07:54.350Z</lastmod>
-  </url>
-  <url>
     <loc>https://piedmont-csci.github.io/math-3310-spr26/graphs-1300.html</loc>
-    <lastmod>2026-02-09T16:07:54.350Z</lastmod>
-  </url>
-  <url>
-    <loc>https://piedmont-csci.github.io/math-3310-spr26/test1.html</loc>
-    <lastmod>2026-02-09T16:07:54.350Z</lastmod>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
   </url>
   <url>
     <loc>https://piedmont-csci.github.io/math-3310-spr26/jan15.html</loc>
-    <lastmod>2026-02-09T16:07:54.350Z</lastmod>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
   </url>
   <url>
-    <loc>https://piedmont-csci.github.io/math-3310-spr26/jan8.html</loc>
-    <lastmod>2026-02-09T16:07:54.350Z</lastmod>
+    <loc>https://piedmont-csci.github.io/math-3310-spr26/test1.html</loc>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
   </url>
   <url>
-    <loc>https://piedmont-csci.github.io/math-3310-spr26/jan13.html</loc>
-    <lastmod>2026-02-09T16:07:54.350Z</lastmod>
+    <loc>https://piedmont-csci.github.io/math-3310-spr26/feb10.html</loc>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
   </url>
   <url>
     <loc>https://piedmont-csci.github.io/math-3310-spr26/jan20.html</loc>
-    <lastmod>2026-02-09T16:07:54.350Z</lastmod>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
+  </url>
+  <url>
+    <loc>https://piedmont-csci.github.io/math-3310-spr26/jan13.html</loc>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
+  </url>
+  <url>
+    <loc>https://piedmont-csci.github.io/math-3310-spr26/jan8.html</loc>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
+  </url>
+  <url>
+    <loc>https://piedmont-csci.github.io/math-3310-spr26/feb5.html</loc>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
+  </url>
+  <url>
+    <loc>https://piedmont-csci.github.io/math-3310-spr26/jan22.html</loc>
+    <lastmod>2026-02-12T20:35:15.131Z</lastmod>
   </url>
 </urlset>
