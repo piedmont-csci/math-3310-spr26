@@ -178,7 +178,7 @@ window.Quarto = {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  E <span class="ot">&lt;-</span> z <span class="sc">*</span> <span class="fl">2.8</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">29</span>);</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x) <span class="sc">-</span> E <span class="sc">&lt;</span> <span class="dv">37</span> <span class="sc">&amp;&amp;</span> <span class="dv">37</span> <span class="sc">&lt;</span> <span class="fu">mean</span>(x) <span class="sc">+</span> E}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9883</code></pre>
+<pre><code>[1] 0.9904</code></pre>
 </div>
 </div>
 </section>
@@ -195,7 +195,7 @@ window.Quarto = {
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  E <span class="ot">&lt;-</span> t <span class="sc">*</span> <span class="fu">sd</span>(x)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">29</span>);</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x) <span class="sc">-</span> E <span class="sc">&lt;</span> <span class="dv">37</span> <span class="sc">&amp;&amp;</span> <span class="dv">37</span> <span class="sc">&lt;</span> <span class="fu">mean</span>(x) <span class="sc">+</span> E}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9907</code></pre>
+<pre><code>[1] 0.9905</code></pre>
 </div>
 </div>
 <p>Now if we want to estimate <span class="math inline">\(\sigma^2\)</span>, we can use the pivotal quantity <span class="math inline">\(\frac{(n-1)S^2}{\sigma^2}\)</span>, which gives us the confidence interval</p>
@@ -209,13 +209,13 @@ window.Quarto = {
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">29</span>, <span class="dv">37</span>, <span class="fl">2.8</span>);</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">29</span> <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">var</span>(x)<span class="sc">/</span>chi2.right <span class="sc">&lt;</span> <span class="fl">2.8</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">&amp;&amp;</span> <span class="fl">2.8</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">&lt;</span> (<span class="dv">29</span> <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">var</span>(x)<span class="sc">/</span>chi2.left}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9893</code></pre>
+<pre><code>[1] 0.9908</code></pre>
 </div>
 </div>
 </section>
 <section id="exponential-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="exponential-distribution">Exponential distribution</h2>
-<p>From class, we say that if <span class="math inline">\(X\sim\operatorname{Exp}(\lambda)\)</span>, then using the pivotal quantity <span class="math inline">\(Y=\lambda X\)</span>, we have <span class="math inline">\(Y\sim Exp(1)\)</span>, giving the confidence interval</p>
+<p>From class, we say that if <span class="math inline">\(X\sim\operatorname{Exp}(\lambda)\)</span>, then using the pivotal quantity <span class="math inline">\(Y=\lambda X\)</span>, we have <span class="math inline">\(Y\sim\operatorname{Exp}(1)\)</span>, giving the confidence interval</p>
 <p><span class="math display">\[-\frac{\ln\left(1 - \frac{\alpha}{2}\right)}{X} &lt; \lambda &lt; -\frac{\ln\left(\frac{\alpha}{2}\right)}{X}\]</span></p>
 <p>Let’s perform a Monte Carlo simulation, secretly knowing that <span class="math inline">\(\lambda = 5\)</span>.</p>
 <div class="cell">
@@ -239,7 +239,7 @@ window.Quarto = {
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>);</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> q<span class="sc">/</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">log</span>(x) <span class="sc">&lt;</span> <span class="dv">6</span> <span class="sc">&amp;&amp;</span> <span class="dv">6</span> <span class="sc">&lt;</span> <span class="fu">log</span>(q<span class="sc">/</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">log</span>(x)}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9895</code></pre>
+<pre><code>[1] 0.9879</code></pre>
 </div>
 </div>
 
