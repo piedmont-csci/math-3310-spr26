@@ -1,0 +1,86 @@
+---
+title: Exact Confidence Intervlas
+format: html
+editor: visual
+---
+
+## Normal distribution ($\sigma^2$ known)
+
+Recall that, thanks to the fact that if $X_1,\ldots,X_n$ are i.i.d. normally distributed random variables with a known variance $\sigma^2$, we have $\frac{\overline X - \mu}{\sigma/\sqrt n}\sim N(0,1)$.  So we have, for a given confidence level $1 - a$, an exact confidence interval
+
+$$\overline X - z_{\alpha/2}\frac{\sigma}{\sqrt n} < \mu < \overline X + z_{\alpha/2}\frac{\sigma}{\sqrt n}$$
+
+Let's test this with a Monte Carlo simulation.  Suppose we take 29 random variates from a $N(37, 2.8^2)$ distribution and compute this confidence interval.  If we pick $\alpha = 0.01$, then we would expect that if we repeat this experiment many times, that 99\% of the time our confidence interval will contain $\mu=37$.
+
+```{r}
+alpha <- 0.01
+z <- qnorm(alpha/2, lower.tail=FALSE)
+mean(replicate(10000, {
+  x <- rnorm(29, 37, 2.8);
+  E <- z * 2.8/sqrt(29);
+  mean(x) - E < 37 && 37 < mean(x) + E}))
+```
+
+## Normal distribution ($\sigma^2$ unknown)
+
+If we don't know $\sigma^2$, then we can use the pivotal quantity $\frac{\overline X - \mu}{S/\sqrt n}\sim t(n-1)$, which gives us the confidence interval
+
+$$\overline X - t_{\alpha/2,n-1}\frac{S}{\sqrt n} < \mu < \overline X + t_{\alpha/2,n-1}\frac{S}{\sqrt n}$$
+
+Let's test this again with a Monte Carlo simulation, but this time assume we don't know the fact that $\sigma^2 = 2.8^2$.
+
+
+```{r}
+alpha <- 0.01
+t <- qt(alpha/2, 29 - 1, lower.tail=FALSE)
+mean(replicate(10000, {
+  x <- rnorm(29, 37, 2.8);
+  E <- t * sd(x)/sqrt(29);
+  mean(x) - E < 37 && 37 < mean(x) + E}))
+```
+
+Now if we want to estimate $\sigma^2$, we can use the pivotal quantity $\frac{(n-1)S^2}{\sigma^2}$, which gives us the confidence interval
+
+$$\frac{(n-1)S^2}{\chi^2_{\alpha/2,n-1}} < \sigma^2 < \frac{(n-1)S^2}{\chi^2_{1-\alpha/2, n-1}}$$
+
+Let's perform another Monte Carlo simulation:
+
+```{r}
+alpha <- 0.01
+chi2.right <- qchisq(alpha/2, 29 - 1, lower.tail=FALSE)
+chi2.left <- qchisq(1 - alpha/2, 29 - 1, lower.tail=FALSE)
+mean(replicate(10000, {
+  x <- rnorm(29, 37, 2.8);
+  (29 - 1)*var(x)/chi2.right < 2.8^2 && 2.8^2 < (29 - 1)*var(x)/chi2.left}))
+```
+
+## Exponential distribution
+
+From class, we say that if $X\sim\operatorname{Exp}(\lambda)$, then using the pivotal quantity $Y=\lambda X$, we have $Y\sim Exp(1)$, giving the confidence interval
+
+$$-\frac{\ln\left(1 - \frac{\alpha}{2}\right)}{X} < \lambda < -\frac{\ln\left(\frac{\alpha}{2}\right)}{X}$$
+
+Let's perform a Monte Carlo simulation, secretly knowing that $\lambda = 5$.
+
+```{r}
+alpha <- 0.01
+mean(replicate(10000, {
+    x <- rexp(1, 5);
+    -log(1 - alpha/2)/x < 5 && 5 < -log(alpha/2)/x}))
+
+```
+
+## Beta distribution
+
+Also in class, we saw that if $X\sim\operatorname{Beta}(\alpha, 1)$, then using the pivotal quantity $Y=X^{\alpha}$, we have $Y\sim U(0, 1)$, giving the confidence interval (using $1-q$ as our confidence level to avoid confusion with the unknown parameter $\alpha$)
+
+$$\frac{\ln\left(1 - \frac{q}{2}\right)}{\ln X} < \alpha < \frac{\ln\left(\frac{q}{2}\right)}{\ln X}$$ 
+
+And performing a Monte Carlo simulation, secretly knowing that $\alpha = 6$:
+
+```{r}
+q <- 0.01
+mean(replicate(10000, {
+    x <- rbeta(1, 6, 1);
+    log(1 - q/2)/log(x) < 6 && 6 < log(q/2)/log(x)}))
+```
