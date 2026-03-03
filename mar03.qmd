@@ -56,7 +56,7 @@ mean(replicate(10000, {
 
 ## Exponential distribution
 
-From class, we say that if $X\sim\operatorname{Exp}(\lambda)$, then using the pivotal quantity $Y=\lambda X$, we have $Y\sim Exp(1)$, giving the confidence interval
+From class, we say that if $X\sim\operatorname{Exp}(\lambda)$, then using the pivotal quantity $Y=\lambda X$, we have $Y\sim\operatorname{Exp}(1)$, giving the confidence interval
 
 $$-\frac{\ln\left(1 - \frac{\alpha}{2}\right)}{X} < \lambda < -\frac{\ln\left(\frac{\alpha}{2}\right)}{X}$$
 
