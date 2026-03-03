@@ -46,77 +46,91 @@
     "href": "jan15.html#monte-carlo-simulation",
     "title": "Monte Carlo simulations for the beta distribution",
     "section": "Monte Carlo simulation",
-    "text": "Monte Carlo simulation\nFirst, let’s define an R function to evaluate our cdf from above:\n\nF &lt;- function(z) {\n  if (z &lt;= 0) {\n    return(0)\n  } else if (z &lt;= 1/2) {\n    return(8/3 * z^4)\n  } else if (z &lt; 1 ) {\n    return (-8/3 * z^4 + 8*z^2 - 16/3*z + 1)\n  } else {\n    return(1)\n  }\n}\n\nNext, we can use R to generate a random sample of \\(\\overline X\\) by first using rbeta(2, 2, 1) to generate 2 random samples from a \\(\\operatorname{Beta}(2, 1)\\) distribution, and then mean to find their sample mean.\n\nmean(rbeta(2,2,1))\n\n[1] 0.7937156\n\n\nTo perform our Monte Carlo simulation, we use replicate to perform the process a bunch of times. Each time, we compare to some value, yielding TRUE or FALSE, and then mean to find the proportion of TRUE’s. (Since TRUE is treated like 1 and FALSE like 0.)\nLet’s choose several different choices for \\(z\\) and compare the theoretical results with our simulated results.\n\nz &lt;- 0.25\nF(z)\n\n[1] 0.01041667\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.009\n\n\n\nz &lt;- 0.5\nF(z)\n\n[1] 0.1666667\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.1609\n\n\n\nz &lt;- 0.75\nF(z)\n\n[1] 0.65625\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.6573\n\n\nNot bad!"
+    "text": "Monte Carlo simulation\nFirst, let’s define an R function to evaluate our cdf from above:\n\nF &lt;- function(z) {\n  if (z &lt;= 0) {\n    return(0)\n  } else if (z &lt;= 1/2) {\n    return(8/3 * z^4)\n  } else if (z &lt; 1 ) {\n    return (-8/3 * z^4 + 8*z^2 - 16/3*z + 1)\n  } else {\n    return(1)\n  }\n}\n\nNext, we can use R to generate a random sample of \\(\\overline X\\) by first using rbeta(2, 2, 1) to generate 2 random samples from a \\(\\operatorname{Beta}(2, 1)\\) distribution, and then mean to find their sample mean.\n\nmean(rbeta(2,2,1))\n\n[1] 0.8485472\n\n\nTo perform our Monte Carlo simulation, we use replicate to perform the process a bunch of times. Each time, we compare to some value, yielding TRUE or FALSE, and then mean to find the proportion of TRUE’s. (Since TRUE is treated like 1 and FALSE like 0.)\nLet’s choose several different choices for \\(z\\) and compare the theoretical results with our simulated results.\n\nz &lt;- 0.25\nF(z)\n\n[1] 0.01041667\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.01\n\n\n\nz &lt;- 0.5\nF(z)\n\n[1] 0.1666667\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.1627\n\n\n\nz &lt;- 0.75\nF(z)\n\n[1] 0.65625\n\nmean(replicate(10000, mean(rbeta(2,2,1)) &lt; z))\n\n[1] 0.6559\n\n\nNot bad!"
   },
   {
     "objectID": "test1.html",
     "href": "test1.html",
     "title": "Test 1 Monte Carlo simulations",
     "section": "",
-    "text": "Let’s check for \\(n\\in\\{2,\\ldots,10\\}\\).\n\nc(1/2^2, mean(replicate(10000, max(rbinom(2, 1, 1/2)) == 0)))\n\n[1] 0.2500 0.2546\n\nc(1/2^3, mean(replicate(10000, max(rbinom(3, 1, 1/2)) == 0)))\n\n[1] 0.125 0.125\n\nc(1/2^4, mean(replicate(10000, max(rbinom(4, 1, 1/2)) == 0)))\n\n[1] 0.0625 0.0609\n\nc(1/2^5, mean(replicate(10000, max(rbinom(5, 1, 1/2)) == 0)))\n\n[1] 0.03125 0.03130\n\nc(1/2^6, mean(replicate(10000, max(rbinom(6, 1, 1/2)) == 0)))\n\n[1] 0.015625 0.015300\n\nc(1/2^7, mean(replicate(10000, max(rbinom(7, 1, 1/2)) == 0)))\n\n[1] 0.0078125 0.0080000\n\nc(1/2^8, mean(replicate(10000, max(rbinom(8, 1, 1/2)) == 0)))\n\n[1] 0.00390625 0.00290000\n\nc(1/2^9, mean(replicate(10000, max(rbinom(9, 1, 1/2)) == 0)))\n\n[1] 0.001953125 0.001300000\n\nc(1/2^10, mean(replicate(10000, max(rbinom(10, 1, 1/2)) == 0)))\n\n[1] 0.0009765625 0.0005000000"
+    "text": "Let’s check for \\(n\\in\\{2,\\ldots,10\\}\\).\n\nc(1/2^2, mean(replicate(10000, max(rbinom(2, 1, 1/2)) == 0)))\n\n[1] 0.2500 0.2523\n\nc(1/2^3, mean(replicate(10000, max(rbinom(3, 1, 1/2)) == 0)))\n\n[1] 0.1250 0.1262\n\nc(1/2^4, mean(replicate(10000, max(rbinom(4, 1, 1/2)) == 0)))\n\n[1] 0.0625 0.0632\n\nc(1/2^5, mean(replicate(10000, max(rbinom(5, 1, 1/2)) == 0)))\n\n[1] 0.03125 0.03010\n\nc(1/2^6, mean(replicate(10000, max(rbinom(6, 1, 1/2)) == 0)))\n\n[1] 0.015625 0.015800\n\nc(1/2^7, mean(replicate(10000, max(rbinom(7, 1, 1/2)) == 0)))\n\n[1] 0.0078125 0.0077000\n\nc(1/2^8, mean(replicate(10000, max(rbinom(8, 1, 1/2)) == 0)))\n\n[1] 0.00390625 0.00390000\n\nc(1/2^9, mean(replicate(10000, max(rbinom(9, 1, 1/2)) == 0)))\n\n[1] 0.001953125 0.002400000\n\nc(1/2^10, mean(replicate(10000, max(rbinom(10, 1, 1/2)) == 0)))\n\n[1] 0.0009765625 0.0013000000"
   },
   {
     "objectID": "test1.html#problem-1",
     "href": "test1.html#problem-1",
     "title": "Test 1 Monte Carlo simulations",
     "section": "",
-    "text": "Let’s check for \\(n\\in\\{2,\\ldots,10\\}\\).\n\nc(1/2^2, mean(replicate(10000, max(rbinom(2, 1, 1/2)) == 0)))\n\n[1] 0.2500 0.2546\n\nc(1/2^3, mean(replicate(10000, max(rbinom(3, 1, 1/2)) == 0)))\n\n[1] 0.125 0.125\n\nc(1/2^4, mean(replicate(10000, max(rbinom(4, 1, 1/2)) == 0)))\n\n[1] 0.0625 0.0609\n\nc(1/2^5, mean(replicate(10000, max(rbinom(5, 1, 1/2)) == 0)))\n\n[1] 0.03125 0.03130\n\nc(1/2^6, mean(replicate(10000, max(rbinom(6, 1, 1/2)) == 0)))\n\n[1] 0.015625 0.015300\n\nc(1/2^7, mean(replicate(10000, max(rbinom(7, 1, 1/2)) == 0)))\n\n[1] 0.0078125 0.0080000\n\nc(1/2^8, mean(replicate(10000, max(rbinom(8, 1, 1/2)) == 0)))\n\n[1] 0.00390625 0.00290000\n\nc(1/2^9, mean(replicate(10000, max(rbinom(9, 1, 1/2)) == 0)))\n\n[1] 0.001953125 0.001300000\n\nc(1/2^10, mean(replicate(10000, max(rbinom(10, 1, 1/2)) == 0)))\n\n[1] 0.0009765625 0.0005000000"
+    "text": "Let’s check for \\(n\\in\\{2,\\ldots,10\\}\\).\n\nc(1/2^2, mean(replicate(10000, max(rbinom(2, 1, 1/2)) == 0)))\n\n[1] 0.2500 0.2523\n\nc(1/2^3, mean(replicate(10000, max(rbinom(3, 1, 1/2)) == 0)))\n\n[1] 0.1250 0.1262\n\nc(1/2^4, mean(replicate(10000, max(rbinom(4, 1, 1/2)) == 0)))\n\n[1] 0.0625 0.0632\n\nc(1/2^5, mean(replicate(10000, max(rbinom(5, 1, 1/2)) == 0)))\n\n[1] 0.03125 0.03010\n\nc(1/2^6, mean(replicate(10000, max(rbinom(6, 1, 1/2)) == 0)))\n\n[1] 0.015625 0.015800\n\nc(1/2^7, mean(replicate(10000, max(rbinom(7, 1, 1/2)) == 0)))\n\n[1] 0.0078125 0.0077000\n\nc(1/2^8, mean(replicate(10000, max(rbinom(8, 1, 1/2)) == 0)))\n\n[1] 0.00390625 0.00390000\n\nc(1/2^9, mean(replicate(10000, max(rbinom(9, 1, 1/2)) == 0)))\n\n[1] 0.001953125 0.002400000\n\nc(1/2^10, mean(replicate(10000, max(rbinom(10, 1, 1/2)) == 0)))\n\n[1] 0.0009765625 0.0013000000"
   },
   {
     "objectID": "test1.html#problem-2",
     "href": "test1.html#problem-2",
     "title": "Test 1 Monte Carlo simulations",
     "section": "Problem 2",
-    "text": "Problem 2\n\nmean(replicate(10000, mean(rbinom(2, 2, 1/4)) == 1))\n\n[1] 0.2034"
+    "text": "Problem 2\n\nmean(replicate(10000, mean(rbinom(2, 2, 1/4)) == 1))\n\n[1] 0.207"
   },
   {
     "objectID": "test1.html#problem-3",
     "href": "test1.html#problem-3",
     "title": "Test 1 Monte Carlo simulations",
     "section": "Problem 3",
-    "text": "Problem 3\n\nmean(replicate(10000, var(runif(2)) &lt; 1/8))\n\n[1] 0.75"
+    "text": "Problem 3\n\nmean(replicate(10000, var(runif(2)) &lt; 1/8))\n\n[1] 0.7554"
   },
   {
     "objectID": "test1.html#problem-4",
     "href": "test1.html#problem-4",
     "title": "Test 1 Monte Carlo simulations",
     "section": "Problem 4",
-    "text": "Problem 4\n\nmean(replicate(10000, mean(rnorm(20)^2) &gt; 0.47955))\n\n[1] 0.9761"
+    "text": "Problem 4\n\nmean(replicate(10000, mean(rnorm(20)^2) &gt; 0.47955))\n\n[1] 0.9752"
   },
   {
     "objectID": "test1.html#problem-5",
     "href": "test1.html#problem-5",
     "title": "Test 1 Monte Carlo simulations",
     "section": "Problem 5",
-    "text": "Problem 5\nSince we don’t know \\(\\sigma^2\\), let’s try a few different values and ensure we get the same thing.\n\nmean(replicate(10000, {x &lt;- rnorm(16); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 9e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 4); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 9e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 9); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 0.0011\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 16); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 5e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 25); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 7e-04"
+    "text": "Problem 5\nSince we don’t know \\(\\sigma^2\\), let’s try a few different values and ensure we get the same thing.\n\nmean(replicate(10000, {x &lt;- rnorm(16); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 9e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 4); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 6e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 9); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 8e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 16); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 6e-04\n\nmean(replicate(10000, {x &lt;- rnorm(16, 0, 25); mean(x) &gt; 0.93325 * sd(x)}))\n\n[1] 9e-04"
   },
   {
-    "objectID": "feb10.html",
-    "href": "feb10.html",
-    "title": "Maximum Likelihood Estimators",
+    "objectID": "mar03.html",
+    "href": "mar03.html",
+    "title": "Exact Confidence Intervlas",
     "section": "",
-    "text": "Recall from class that we found that the maximum likelihood estimator for the rate parameter \\(\\lambda\\) in the exponential distribution \\(\\operatorname{Exp}(\\lambda)\\) is \\(\\hat\\lambda = \\frac{1}{\\overline X}\\).\nLet’s see how we did. We’ll generate 1000 random samples from an \\(\\operatorname{Exp}{(54)}\\) distribution to see how we did.\n\nx &lt;- rexp(1000, 54)\nlambdaHat &lt;- 1/mean(x)\nlambdaHat\n\n[1] 53.56418\n\n\nLet’s also examine it graphically by plotting:\n\nthe “empiricial cumulative distribution function”, which gives us the proportion of the data in our data set bounded above by the given value. The plot.ecdf function gives us this.\nthe cumulative distribution function of an exponential distribution with our estimate \\(\\hat\\lambda\\) as its rate parameter. We first create two vectors, xx (which contains all values between 0 and 0.15, going up by 0.01) and yy (which we get by plugging all the elements of xx into the cdf of our estimated distribution), and plot them using the lines function.\n\n\nplot.ecdf(x)\nxx &lt;- seq(0, 0.15, 0.01)\nyy &lt;- pexp(xx, lambdaHat)\nlines(xx, yy, col=\"red\")\n\n\n\n\n\n\n\n\nNow let’s do the same thing for our other two examples."
+    "text": "Recall that, thanks to the fact that if \\(X_1,\\ldots,X_n\\) are i.i.d. normally distributed random variables with a known variance \\(\\sigma^2\\), we have \\(\\frac{\\overline X - \\mu}{\\sigma/\\sqrt n}\\sim N(0,1)\\). So we have, for a given confidence level \\(1 - a\\), an exact confidence interval\n\\[\\overline X - z_{\\alpha/2}\\frac{\\sigma}{\\sqrt n} &lt; \\mu &lt; \\overline X + z_{\\alpha/2}\\frac{\\sigma}{\\sqrt n}\\]\nLet’s test this with a Monte Carlo simulation. Suppose we take 29 random variates from a \\(N(37, 2.8^2)\\) distribution and compute this confidence interval. If we pick \\(\\alpha = 0.01\\), then we would expect that if we repeat this experiment many times, that 99% of the time our confidence interval will contain \\(\\mu=37\\).\n\nalpha &lt;- 0.01\nz &lt;- qnorm(alpha/2, lower.tail=FALSE)\nmean(replicate(10000, {\n  x &lt;- rnorm(29, 37, 2.8);\n  E &lt;- z * 2.8/sqrt(29);\n  mean(x) - E &lt; 37 && 37 &lt; mean(x) + E}))\n\n[1] 0.9883"
   },
   {
-    "objectID": "feb10.html#exponential-distribution",
-    "href": "feb10.html#exponential-distribution",
-    "title": "Maximum Likelihood Estimators",
+    "objectID": "mar03.html#normal-distribution-sigma2-known",
+    "href": "mar03.html#normal-distribution-sigma2-known",
+    "title": "Exact Confidence Intervlas",
     "section": "",
-    "text": "Recall from class that we found that the maximum likelihood estimator for the rate parameter \\(\\lambda\\) in the exponential distribution \\(\\operatorname{Exp}(\\lambda)\\) is \\(\\hat\\lambda = \\frac{1}{\\overline X}\\).\nLet’s see how we did. We’ll generate 1000 random samples from an \\(\\operatorname{Exp}{(54)}\\) distribution to see how we did.\n\nx &lt;- rexp(1000, 54)\nlambdaHat &lt;- 1/mean(x)\nlambdaHat\n\n[1] 53.56418\n\n\nLet’s also examine it graphically by plotting:\n\nthe “empiricial cumulative distribution function”, which gives us the proportion of the data in our data set bounded above by the given value. The plot.ecdf function gives us this.\nthe cumulative distribution function of an exponential distribution with our estimate \\(\\hat\\lambda\\) as its rate parameter. We first create two vectors, xx (which contains all values between 0 and 0.15, going up by 0.01) and yy (which we get by plugging all the elements of xx into the cdf of our estimated distribution), and plot them using the lines function.\n\n\nplot.ecdf(x)\nxx &lt;- seq(0, 0.15, 0.01)\nyy &lt;- pexp(xx, lambdaHat)\nlines(xx, yy, col=\"red\")\n\n\n\n\n\n\n\n\nNow let’s do the same thing for our other two examples."
+    "text": "Recall that, thanks to the fact that if \\(X_1,\\ldots,X_n\\) are i.i.d. normally distributed random variables with a known variance \\(\\sigma^2\\), we have \\(\\frac{\\overline X - \\mu}{\\sigma/\\sqrt n}\\sim N(0,1)\\). So we have, for a given confidence level \\(1 - a\\), an exact confidence interval\n\\[\\overline X - z_{\\alpha/2}\\frac{\\sigma}{\\sqrt n} &lt; \\mu &lt; \\overline X + z_{\\alpha/2}\\frac{\\sigma}{\\sqrt n}\\]\nLet’s test this with a Monte Carlo simulation. Suppose we take 29 random variates from a \\(N(37, 2.8^2)\\) distribution and compute this confidence interval. If we pick \\(\\alpha = 0.01\\), then we would expect that if we repeat this experiment many times, that 99% of the time our confidence interval will contain \\(\\mu=37\\).\n\nalpha &lt;- 0.01\nz &lt;- qnorm(alpha/2, lower.tail=FALSE)\nmean(replicate(10000, {\n  x &lt;- rnorm(29, 37, 2.8);\n  E &lt;- z * 2.8/sqrt(29);\n  mean(x) - E &lt; 37 && 37 &lt; mean(x) + E}))\n\n[1] 0.9883"
   },
   {
-    "objectID": "feb10.html#poisson-distribution",
-    "href": "feb10.html#poisson-distribution",
-    "title": "Maximum Likelihood Estimators",
-    "section": "Poisson distribution",
-    "text": "Poisson distribution\n\nx &lt;- rpois(1000, 54)\nlambdaHat &lt;- mean(x)\nlambdaHat\n\n[1] 54.464\n\nplot.ecdf(x)\nxx &lt;- seq(30, 80)\nyy &lt;- ppois(xx, 54)\nlines(xx, yy, col=\"blue\")"
+    "objectID": "mar03.html#normal-distribution-sigma2-unknown",
+    "href": "mar03.html#normal-distribution-sigma2-unknown",
+    "title": "Exact Confidence Intervlas",
+    "section": "Normal distribution (\\(\\sigma^2\\) unknown)",
+    "text": "Normal distribution (\\(\\sigma^2\\) unknown)\nIf we don’t know \\(\\sigma^2\\), then we can use the pivotal quantity \\(\\frac{\\overline X - \\mu}{S/\\sqrt n}\\sim t(n-1)\\), which gives us the confidence interval\n\\[\\overline X - t_{\\alpha/2,n-1}\\frac{S}{\\sqrt n} &lt; \\mu &lt; \\overline X + t_{\\alpha/2,n-1}\\frac{S}{\\sqrt n}\\]\nLet’s test this again with a Monte Carlo simulation, but this time assume we don’t know the fact that \\(\\sigma^2 = 2.8^2\\).\n\nalpha &lt;- 0.01\nt &lt;- qt(alpha/2, 29 - 1, lower.tail=FALSE)\nmean(replicate(10000, {\n  x &lt;- rnorm(29, 37, 2.8);\n  E &lt;- t * sd(x)/sqrt(29);\n  mean(x) - E &lt; 37 && 37 &lt; mean(x) + E}))\n\n[1] 0.9907\n\n\nNow if we want to estimate \\(\\sigma^2\\), we can use the pivotal quantity \\(\\frac{(n-1)S^2}{\\sigma^2}\\), which gives us the confidence interval\n\\[\\frac{(n-1)S^2}{\\chi^2_{\\alpha/2,n-1}} &lt; \\sigma^2 &lt; \\frac{(n-1)S^2}{\\chi^2_{1-\\alpha/2, n-1}}\\]\nLet’s perform another Monte Carlo simulation:\n\nalpha &lt;- 0.01\nchi2.right &lt;- qchisq(alpha/2, 29 - 1, lower.tail=FALSE)\nchi2.left &lt;- qchisq(1 - alpha/2, 29 - 1, lower.tail=FALSE)\nmean(replicate(10000, {\n  x &lt;- rnorm(29, 37, 2.8);\n  (29 - 1)*var(x)/chi2.right &lt; 2.8^2 && 2.8^2 &lt; (29 - 1)*var(x)/chi2.left}))\n\n[1] 0.9893"
   },
   {
-    "objectID": "feb10.html#normal-distribution",
-    "href": "feb10.html#normal-distribution",
-    "title": "Maximum Likelihood Estimators",
-    "section": "Normal distribution",
-    "text": "Normal distribution\n\nx &lt;- rnorm(1000, 5, 4)\nmuHat &lt;- mean(x)\nsigmasqHat &lt;- 999/1000 * var(x)\nc(muHat, sigmasqHat)\n\n[1]  5.097825 15.863403\n\n\nNote that the third argument to rnorm specifies the standard deviation \\(\\sigma\\) and not the variance \\(\\sigma^2\\), so we got an estimate of \\(4^2 = 16\\).\n\nplot.ecdf(x)\nxx &lt;- seq(-10, 20)\nyy &lt;- pnorm(xx, 5, 4)\nlines(xx, yy, col=\"green\")"
+    "objectID": "mar03.html#exponential-distribution",
+    "href": "mar03.html#exponential-distribution",
+    "title": "Exact Confidence Intervlas",
+    "section": "Exponential distribution",
+    "text": "Exponential distribution\nFrom class, we say that if \\(X\\sim\\operatorname{Exp}(\\lambda)\\), then using the pivotal quantity \\(Y=\\lambda X\\), we have \\(Y\\sim Exp(1)\\), giving the confidence interval\n\\[-\\frac{\\ln\\left(1 - \\frac{\\alpha}{2}\\right)}{X} &lt; \\lambda &lt; -\\frac{\\ln\\left(\\frac{\\alpha}{2}\\right)}{X}\\]\nLet’s perform a Monte Carlo simulation, secretly knowing that \\(\\lambda = 5\\).\n\nalpha &lt;- 0.01\nmean(replicate(10000, {\n    x &lt;- rexp(1, 5);\n    -log(1 - alpha/2)/x &lt; 5 && 5 &lt; -log(alpha/2)/x}))\n\n[1] 0.9893"
+  },
+  {
+    "objectID": "mar03.html#beta-distribution",
+    "href": "mar03.html#beta-distribution",
+    "title": "Exact Confidence Intervlas",
+    "section": "Beta distribution",
+    "text": "Beta distribution\nAlso in class, we saw that if \\(X\\sim\\operatorname{Beta}(\\alpha, 1)\\), then using the pivotal quantity \\(Y=X^{\\alpha}\\), we have \\(Y\\sim U(0, 1)\\), giving the confidence interval (using \\(1-q\\) as our confidence level to avoid confusion with the unknown parameter \\(\\alpha\\))\n\\[\\frac{\\ln\\left(1 - \\frac{q}{2}\\right)}{\\ln X} &lt; \\alpha &lt; \\frac{\\ln\\left(\\frac{q}{2}\\right)}{\\ln X}\\]\nAnd performing a Monte Carlo simulation, secretly knowing that \\(\\alpha = 6\\):\n\nq &lt;- 0.01\nmean(replicate(10000, {\n    x &lt;- rbeta(1, 6, 1);\n    log(1 - q/2)/log(x) &lt; 6 && 6 &lt; log(q/2)/log(x)}))\n\n[1] 0.9895"
+  },
+  {
+    "objectID": "jan13.html",
+    "href": "jan13.html",
+    "title": "Monte Carlo Simulations",
+    "section": "",
+    "text": "Recall that we found that if \\(X_1, X_2\\sim U(0, 1)\\), then the minimum \\(X_{(1)}\\) has probability density function \\(f_{X_{(1)}}(x) = 2(1-x)\\). Integrating, its cumulative distribution function (on the unit interval) is \\[\\begin{align}\nF_{X_{(1)}}(x) &= \\int_0^x 2(1 - t)\\,dt \\\\\n&= -(1-t)^2\\Big|_0^x \\\\\n&= -(1-x)^2 + (1 - 0)^2 \\\\\n&= -1 + 2x - x^2 + 1 \\\\\n&= -x^2 + 2x\n\\end{align}\\]\nLet’s check this with some Monte Carlo simulations. For example, we should expect that the probability that our minimum is less than \\(\\frac{1}{2}\\) is\n\\[F_{X_{(1)}}(0.5) = -0.5^2 + 2\\cdot 0.5 = 0.75\\]\nRecall that runif(2) will generate a random sample from our, and min(runif(2)) will give us the minimum. We can do this multiple times with replicate:\n\nreplicate(10, min(runif(2)))\n\n [1] 0.158525506 0.026252306 0.167615267 0.009301394 0.095784911 0.044796891\n [7] 0.862775909 0.473484168 0.311596475 0.248687739\n\n\nWe’re interested in finding the number of our random samples that were less than 0.5. If we replicate a statement, we’ll get a list of a bunch of boolean (TRUE or FALSE) objects.\n\nreplicate(10, min(runif(2)) &lt; 0.5)\n\n [1]  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE\n\n\nR treats these Boolean objects like integers (0 for FALSE and 1 for TRUE), so we can compute the proportion of TRUE’s by taking the mean:\n\nmean(replicate(10, min(runif(2)) &lt; 0.5))\n\n[1] 0.7\n\n\nNow let’s increase the sample size:\n\nmean(replicate(10000, min(runif(2)) &lt; 0.5))\n\n[1] 0.751\n\n\nWe got pretty close to our theoretical result of 0.75!"
   },
   {
     "objectID": "jan20.html",
@@ -144,21 +158,42 @@
     "href": "jan20.html#monte-carlo-simulations",
     "title": "Variance of Dice",
     "section": "Monte Carlo Simulations",
-    "text": "Monte Carlo Simulations\nFirst, let’s check the expected value. Recall that to perform a Monte Carlo simulation, we use mean(replicate(...)) to run our code a bunch of times and find the average value.\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE))))\n\n[1] 2.90875\n\n35/12\n\n[1] 2.916667\n\n\nNow let’s check the values of our probability mass function. Recall that by have a statement (e.g., var(...) == 0), replicate(...) spits out a bunch of booleans (TRUE and FALSE), and mean(...) gives us the proportion of TRUE’s. This gives us an estimate of the probability of that particular value.\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 0))\n\n[1] 0.1705\n\n1/6\n\n[1] 0.1666667\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 1/2))\n\n[1] 0.2818\n\n5/18\n\n[1] 0.2777778\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 2))\n\n[1] 0.2208\n\n2/9\n\n[1] 0.2222222\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 9/2))\n\n[1] 0.1675\n\n1/6\n\n[1] 0.1666667\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 8))\n\n[1] 0.1116\n\n1/9\n\n[1] 0.1111111\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 25/2))\n\n[1] 0.0512\n\n1/18\n\n[1] 0.05555556"
+    "text": "Monte Carlo Simulations\nFirst, let’s check the expected value. Recall that to perform a Monte Carlo simulation, we use mean(replicate(...)) to run our code a bunch of times and find the average value.\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE))))\n\n[1] 2.91265\n\n35/12\n\n[1] 2.916667\n\n\nNow let’s check the values of our probability mass function. Recall that by have a statement (e.g., var(...) == 0), replicate(...) spits out a bunch of booleans (TRUE and FALSE), and mean(...) gives us the proportion of TRUE’s. This gives us an estimate of the probability of that particular value.\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 0))\n\n[1] 0.1694\n\n1/6\n\n[1] 0.1666667\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 1/2))\n\n[1] 0.2863\n\n5/18\n\n[1] 0.2777778\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 2))\n\n[1] 0.2236\n\n2/9\n\n[1] 0.2222222\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 9/2))\n\n[1] 0.1706\n\n1/6\n\n[1] 0.1666667\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 8))\n\n[1] 0.1128\n\n1/9\n\n[1] 0.1111111\n\n\n\nmean(replicate(10000, var(sample(c(1, 2, 3, 4, 5, 6), 2, replace = TRUE)) == 25/2))\n\n[1] 0.052\n\n1/18\n\n[1] 0.05555556"
   },
   {
     "objectID": "jan20.html#binomial-distribution",
     "href": "jan20.html#binomial-distribution",
     "title": "Variance of Dice",
     "section": "Binomial Distribution",
-    "text": "Binomial Distribution\nWe also started a second problem. Suppose \\(X_1,X_2\\sim B\\left(3, \\frac{1}{2}\\right)\\). We computed\n\\[\\begin{align}\nP(S^2 = 0) &= \\sum_{k=0}^3 P(X_1 = k)P(X_2=k) \\\\\n&= \\sum_{k=0}^3\\left(\\binom{3}{k}\\left(\\frac{1}{2}\\right)^k\\left(\\frac{1}{2}\\right)^{3-k}\\right)^2 \\\\\n&= \\sum_{k=0}\\binom{3}{k}^2\\frac{1}{64}\\\\\n&= \\frac{1}{64}\\left(1^2 + 3^2 + 3^2 + 1^3\\right) \\\\\n&= \\frac{5}{16}\n\\end{align}\\]\nLet’s check this with a Monte Carlo simulation as well. We may use the rbinom function. It takes three arguments: the number of samples and then the \\(n\\) and \\(p\\) from our binomial distribution. So we want to use rbinom(2, 3, 1/2).\n\nmean(replicate(10000, var(rbinom(2, 3, 1/2)) == 0))\n\n[1] 0.3183\n\n5/16\n\n[1] 0.3125"
+    "text": "Binomial Distribution\nWe also started a second problem. Suppose \\(X_1,X_2\\sim B\\left(3, \\frac{1}{2}\\right)\\). We computed\n\\[\\begin{align}\nP(S^2 = 0) &= \\sum_{k=0}^3 P(X_1 = k)P(X_2=k) \\\\\n&= \\sum_{k=0}^3\\left(\\binom{3}{k}\\left(\\frac{1}{2}\\right)^k\\left(\\frac{1}{2}\\right)^{3-k}\\right)^2 \\\\\n&= \\sum_{k=0}\\binom{3}{k}^2\\frac{1}{64}\\\\\n&= \\frac{1}{64}\\left(1^2 + 3^2 + 3^2 + 1^3\\right) \\\\\n&= \\frac{5}{16}\n\\end{align}\\]\nLet’s check this with a Monte Carlo simulation as well. We may use the rbinom function. It takes three arguments: the number of samples and then the \\(n\\) and \\(p\\) from our binomial distribution. So we want to use rbinom(2, 3, 1/2).\n\nmean(replicate(10000, var(rbinom(2, 3, 1/2)) == 0))\n\n[1] 0.3149\n\n5/16\n\n[1] 0.3125"
   },
   {
-    "objectID": "jan13.html",
-    "href": "jan13.html",
-    "title": "Monte Carlo Simulations",
+    "objectID": "feb10.html",
+    "href": "feb10.html",
+    "title": "Maximum Likelihood Estimators",
     "section": "",
-    "text": "Recall that we found that if \\(X_1, X_2\\sim U(0, 1)\\), then the minimum \\(X_{(1)}\\) has probability density function \\(f_{X_{(1)}}(x) = 2(1-x)\\). Integrating, its cumulative distribution function (on the unit interval) is \\[\\begin{align}\nF_{X_{(1)}}(x) &= \\int_0^x 2(1 - t)\\,dt \\\\\n&= -(1-t)^2\\Big|_0^x \\\\\n&= -(1-x)^2 + (1 - 0)^2 \\\\\n&= -1 + 2x - x^2 + 1 \\\\\n&= -x^2 + 2x\n\\end{align}\\]\nLet’s check this with some Monte Carlo simulations. For example, we should expect that the probability that our minimum is less than \\(\\frac{1}{2}\\) is\n\\[F_{X_{(1)}}(0.5) = -0.5^2 + 2\\cdot 0.5 = 0.75\\]\nRecall that runif(2) will generate a random sample from our, and min(runif(2)) will give us the minimum. We can do this multiple times with replicate:\n\nreplicate(10, min(runif(2)))\n\n [1] 0.19860485 0.35366928 0.85832971 0.64318600 0.73555678 0.57205241\n [7] 0.26672812 0.25328451 0.58655646 0.06290076\n\n\nWe’re interested in finding the number of our random samples that were less than 0.5. If we replicate a statement, we’ll get a list of a bunch of boolean (TRUE or FALSE) objects.\n\nreplicate(10, min(runif(2)) &lt; 0.5)\n\n [1]  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE\n\n\nR treats these Boolean objects like integers (0 for FALSE and 1 for TRUE), so we can compute the proportion of TRUE’s by taking the mean:\n\nmean(replicate(10, min(runif(2)) &lt; 0.5))\n\n[1] 0.8\n\n\nNow let’s increase the sample size:\n\nmean(replicate(10000, min(runif(2)) &lt; 0.5))\n\n[1] 0.745\n\n\nWe got pretty close to our theoretical result of 0.75!"
+    "text": "Recall from class that we found that the maximum likelihood estimator for the rate parameter \\(\\lambda\\) in the exponential distribution \\(\\operatorname{Exp}(\\lambda)\\) is \\(\\hat\\lambda = \\frac{1}{\\overline X}\\).\nLet’s see how we did. We’ll generate 1000 random samples from an \\(\\operatorname{Exp}{(54)}\\) distribution to see how we did.\n\nx &lt;- rexp(1000, 54)\nlambdaHat &lt;- 1/mean(x)\nlambdaHat\n\n[1] 53.98533\n\n\nLet’s also examine it graphically by plotting:\n\nthe “empiricial cumulative distribution function”, which gives us the proportion of the data in our data set bounded above by the given value. The plot.ecdf function gives us this.\nthe cumulative distribution function of an exponential distribution with our estimate \\(\\hat\\lambda\\) as its rate parameter. We first create two vectors, xx (which contains all values between 0 and 0.15, going up by 0.01) and yy (which we get by plugging all the elements of xx into the cdf of our estimated distribution), and plot them using the lines function.\n\n\nplot.ecdf(x)\nxx &lt;- seq(0, 0.15, 0.01)\nyy &lt;- pexp(xx, lambdaHat)\nlines(xx, yy, col=\"red\")\n\n\n\n\n\n\n\n\nNow let’s do the same thing for our other two examples."
+  },
+  {
+    "objectID": "feb10.html#exponential-distribution",
+    "href": "feb10.html#exponential-distribution",
+    "title": "Maximum Likelihood Estimators",
+    "section": "",
+    "text": "Recall from class that we found that the maximum likelihood estimator for the rate parameter \\(\\lambda\\) in the exponential distribution \\(\\operatorname{Exp}(\\lambda)\\) is \\(\\hat\\lambda = \\frac{1}{\\overline X}\\).\nLet’s see how we did. We’ll generate 1000 random samples from an \\(\\operatorname{Exp}{(54)}\\) distribution to see how we did.\n\nx &lt;- rexp(1000, 54)\nlambdaHat &lt;- 1/mean(x)\nlambdaHat\n\n[1] 53.98533\n\n\nLet’s also examine it graphically by plotting:\n\nthe “empiricial cumulative distribution function”, which gives us the proportion of the data in our data set bounded above by the given value. The plot.ecdf function gives us this.\nthe cumulative distribution function of an exponential distribution with our estimate \\(\\hat\\lambda\\) as its rate parameter. We first create two vectors, xx (which contains all values between 0 and 0.15, going up by 0.01) and yy (which we get by plugging all the elements of xx into the cdf of our estimated distribution), and plot them using the lines function.\n\n\nplot.ecdf(x)\nxx &lt;- seq(0, 0.15, 0.01)\nyy &lt;- pexp(xx, lambdaHat)\nlines(xx, yy, col=\"red\")\n\n\n\n\n\n\n\n\nNow let’s do the same thing for our other two examples."
+  },
+  {
+    "objectID": "feb10.html#poisson-distribution",
+    "href": "feb10.html#poisson-distribution",
+    "title": "Maximum Likelihood Estimators",
+    "section": "Poisson distribution",
+    "text": "Poisson distribution\n\nx &lt;- rpois(1000, 54)\nlambdaHat &lt;- mean(x)\nlambdaHat\n\n[1] 54.014\n\nplot.ecdf(x)\nxx &lt;- seq(30, 80)\nyy &lt;- ppois(xx, 54)\nlines(xx, yy, col=\"blue\")"
+  },
+  {
+    "objectID": "feb10.html#normal-distribution",
+    "href": "feb10.html#normal-distribution",
+    "title": "Maximum Likelihood Estimators",
+    "section": "Normal distribution",
+    "text": "Normal distribution\n\nx &lt;- rnorm(1000, 5, 4)\nmuHat &lt;- mean(x)\nsigmasqHat &lt;- 999/1000 * var(x)\nc(muHat, sigmasqHat)\n\n[1]  4.886746 16.087587\n\n\nNote that the third argument to rnorm specifies the standard deviation \\(\\sigma\\) and not the variance \\(\\sigma^2\\), so we got an estimate of \\(4^2 = 16\\).\n\nplot.ecdf(x)\nxx &lt;- seq(-10, 20)\nyy &lt;- pnorm(xx, 5, 4)\nlines(xx, yy, col=\"green\")"
   },
   {
     "objectID": "jan8.html",
@@ -172,7 +207,7 @@
     "href": "feb5.html",
     "title": "Method of Moments",
     "section": "",
-    "text": "Let’s suppose that \\(X_i\\sim B(20, 0.67)\\). Our goal is to estimate \\(n=20\\) and \\(p = 0.67\\).\nWe found in class the method of moments estimators \\(\\hat p = 1 - \\frac{M_2 - M_1^2}{M1}\\) and \\(\\hat n = \\frac{M_1}{\\hat p}\\). Now let’s generate a bunch of random binomially distributed data with the parameters that we secretly know and see how well we did.\n\nx &lt;- rbinom(1000, 20, 0.67)\nM1 &lt;- mean(x)\nM2 &lt;- mean(x^2)\npHat &lt;- 1 - (M2 - M1^2)/M1\nnHat &lt;- M1 / pHat\nc(nHat, pHat)\n\n[1] 20.0461216  0.6712022\n\n\nNow suppose \\(X_i\\sim U(2, 28)\\). Our goal is to estimate \\(a = 2\\) and \\(b = 28\\).\nWe found in class the method of moments estimators \\(\\hat a = M_1 - \\sqrt{3M_2 - 3M_1^2}\\) and \\(\\hat b = M_1 + \\sqrt{3M_2 - 3M_1^2}\\). Let see how we did:\n\nx &lt;- runif(1000, 2, 28)\nM1 &lt;- mean(x)\nM2 &lt;- mean(x^2)\naHat &lt;- M1 - sqrt(3*M2 - 3*M1^2)\nbHat &lt;- M1 + sqrt(3*M2 - 3*M1^2)\nc(aHat, bHat)\n\n[1]  2.00946 27.74034"
+    "text": "Let’s suppose that \\(X_i\\sim B(20, 0.67)\\). Our goal is to estimate \\(n=20\\) and \\(p = 0.67\\).\nWe found in class the method of moments estimators \\(\\hat p = 1 - \\frac{M_2 - M_1^2}{M1}\\) and \\(\\hat n = \\frac{M_1}{\\hat p}\\). Now let’s generate a bunch of random binomially distributed data with the parameters that we secretly know and see how well we did.\n\nx &lt;- rbinom(1000, 20, 0.67)\nM1 &lt;- mean(x)\nM2 &lt;- mean(x^2)\npHat &lt;- 1 - (M2 - M1^2)/M1\nnHat &lt;- M1 / pHat\nc(nHat, pHat)\n\n[1] 20.5520794  0.6542404\n\n\nNow suppose \\(X_i\\sim U(2, 28)\\). Our goal is to estimate \\(a = 2\\) and \\(b = 28\\).\nWe found in class the method of moments estimators \\(\\hat a = M_1 - \\sqrt{3M_2 - 3M_1^2}\\) and \\(\\hat b = M_1 + \\sqrt{3M_2 - 3M_1^2}\\). Let see how we did:\n\nx &lt;- runif(1000, 2, 28)\nM1 &lt;- mean(x)\nM2 &lt;- mean(x^2)\naHat &lt;- M1 - sqrt(3*M2 - 3*M1^2)\nbHat &lt;- M1 + sqrt(3*M2 - 3*M1^2)\nc(aHat, bHat)\n\n[1]  2.34728 28.20917"
   },
   {
     "objectID": "jan22.html",

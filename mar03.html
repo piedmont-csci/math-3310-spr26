@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Method of Moments – MATH 3310</title>
+<title>Exact Confidence Intervlas – MATH 3310</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,7 +148,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Method of Moments</h1>
+<h1 class="title">Exact Confidence Intervlas</h1>
 </div>
 
 
@@ -165,34 +165,86 @@ window.Quarto = {
 </header>
 
 
-<p>Let’s suppose that <span class="math inline">\(X_i\sim B(20, 0.67)\)</span>. Our goal is to estimate <span class="math inline">\(n=20\)</span> and <span class="math inline">\(p = 0.67\)</span>.</p>
-<p>We found in class the method of moments estimators <span class="math inline">\(\hat p = 1 - \frac{M_2 - M_1^2}{M1}\)</span> and <span class="math inline">\(\hat n = \frac{M_1}{\hat p}\)</span>. Now let’s generate a bunch of random binomially distributed data with the parameters that we secretly know and see how well we did.</p>
+<section id="normal-distribution-sigma2-known" class="level2">
+<h2 class="anchored" data-anchor-id="normal-distribution-sigma2-known">Normal distribution (<span class="math inline">\(\sigma^2\)</span> known)</h2>
+<p>Recall that, thanks to the fact that if <span class="math inline">\(X_1,\ldots,X_n\)</span> are i.i.d. normally distributed random variables with a known variance <span class="math inline">\(\sigma^2\)</span>, we have <span class="math inline">\(\frac{\overline X - \mu}{\sigma/\sqrt n}\sim N(0,1)\)</span>. So we have, for a given confidence level <span class="math inline">\(1 - a\)</span>, an exact confidence interval</p>
+<p><span class="math display">\[\overline X - z_{\alpha/2}\frac{\sigma}{\sqrt n} &lt; \mu &lt; \overline X + z_{\alpha/2}\frac{\sigma}{\sqrt n}\]</span></p>
+<p>Let’s test this with a Monte Carlo simulation. Suppose we take 29 random variates from a <span class="math inline">\(N(37, 2.8^2)\)</span> distribution and compute this confidence interval. If we pick <span class="math inline">\(\alpha = 0.01\)</span>, then we would expect that if we repeat this experiment many times, that 99% of the time our confidence interval will contain <span class="math inline">\(\mu=37\)</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1000</span>, <span class="dv">20</span>, <span class="fl">0.67</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(x<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pHat <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (M2 <span class="sc">-</span> M1<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>M1</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>nHat <span class="ot">&lt;-</span> M1 <span class="sc">/</span> pHat</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(nHat, pHat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">29</span>, <span class="dv">37</span>, <span class="fl">2.8</span>);</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  E <span class="ot">&lt;-</span> z <span class="sc">*</span> <span class="fl">2.8</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">29</span>);</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x) <span class="sc">-</span> E <span class="sc">&lt;</span> <span class="dv">37</span> <span class="sc">&amp;&amp;</span> <span class="dv">37</span> <span class="sc">&lt;</span> <span class="fu">mean</span>(x) <span class="sc">+</span> E}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 20.5520794  0.6542404</code></pre>
+<pre><code>[1] 0.9883</code></pre>
 </div>
 </div>
-<p>Now suppose <span class="math inline">\(X_i\sim U(2, 28)\)</span>. Our goal is to estimate <span class="math inline">\(a = 2\)</span> and <span class="math inline">\(b = 28\)</span>.</p>
-<p>We found in class the method of moments estimators <span class="math inline">\(\hat a = M_1 - \sqrt{3M_2 - 3M_1^2}\)</span> and <span class="math inline">\(\hat b = M_1 + \sqrt{3M_2 - 3M_1^2}\)</span>. Let see how we did:</p>
+</section>
+<section id="normal-distribution-sigma2-unknown" class="level2">
+<h2 class="anchored" data-anchor-id="normal-distribution-sigma2-unknown">Normal distribution (<span class="math inline">\(\sigma^2\)</span> unknown)</h2>
+<p>If we don’t know <span class="math inline">\(\sigma^2\)</span>, then we can use the pivotal quantity <span class="math inline">\(\frac{\overline X - \mu}{S/\sqrt n}\sim t(n-1)\)</span>, which gives us the confidence interval</p>
+<p><span class="math display">\[\overline X - t_{\alpha/2,n-1}\frac{S}{\sqrt n} &lt; \mu &lt; \overline X + t_{\alpha/2,n-1}\frac{S}{\sqrt n}\]</span></p>
+<p>Let’s test this again with a Monte Carlo simulation, but this time assume we don’t know the fact that <span class="math inline">\(\sigma^2 = 2.8^2\)</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>, <span class="dv">2</span>, <span class="dv">28</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(x<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>aHat <span class="ot">&lt;-</span> M1 <span class="sc">-</span> <span class="fu">sqrt</span>(<span class="dv">3</span><span class="sc">*</span>M2 <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>M1<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>bHat <span class="ot">&lt;-</span> M1 <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">3</span><span class="sc">*</span>M2 <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>M1<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(aHat, bHat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(alpha<span class="sc">/</span><span class="dv">2</span>, <span class="dv">29</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">29</span>, <span class="dv">37</span>, <span class="fl">2.8</span>);</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  E <span class="ot">&lt;-</span> t <span class="sc">*</span> <span class="fu">sd</span>(x)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">29</span>);</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x) <span class="sc">-</span> E <span class="sc">&lt;</span> <span class="dv">37</span> <span class="sc">&amp;&amp;</span> <span class="dv">37</span> <span class="sc">&lt;</span> <span class="fu">mean</span>(x) <span class="sc">+</span> E}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]  2.34728 28.20917</code></pre>
+<pre><code>[1] 0.9907</code></pre>
+</div>
+</div>
+<p>Now if we want to estimate <span class="math inline">\(\sigma^2\)</span>, we can use the pivotal quantity <span class="math inline">\(\frac{(n-1)S^2}{\sigma^2}\)</span>, which gives us the confidence interval</p>
+<p><span class="math display">\[\frac{(n-1)S^2}{\chi^2_{\alpha/2,n-1}} &lt; \sigma^2 &lt; \frac{(n-1)S^2}{\chi^2_{1-\alpha/2, n-1}}\]</span></p>
+<p>Let’s perform another Monte Carlo simulation:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>chi2.right <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(alpha<span class="sc">/</span><span class="dv">2</span>, <span class="dv">29</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>chi2.left <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alpha<span class="sc">/</span><span class="dv">2</span>, <span class="dv">29</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">29</span>, <span class="dv">37</span>, <span class="fl">2.8</span>);</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">29</span> <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">var</span>(x)<span class="sc">/</span>chi2.right <span class="sc">&lt;</span> <span class="fl">2.8</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">&amp;&amp;</span> <span class="fl">2.8</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">&lt;</span> (<span class="dv">29</span> <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">var</span>(x)<span class="sc">/</span>chi2.left}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9893</code></pre>
+</div>
+</div>
+</section>
+<section id="exponential-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="exponential-distribution">Exponential distribution</h2>
+<p>From class, we say that if <span class="math inline">\(X\sim\operatorname{Exp}(\lambda)\)</span>, then using the pivotal quantity <span class="math inline">\(Y=\lambda X\)</span>, we have <span class="math inline">\(Y\sim Exp(1)\)</span>, giving the confidence interval</p>
+<p><span class="math display">\[-\frac{\ln\left(1 - \frac{\alpha}{2}\right)}{X} &lt; \lambda &lt; -\frac{\ln\left(\frac{\alpha}{2}\right)}{X}\]</span></p>
+<p>Let’s perform a Monte Carlo simulation, secretly knowing that <span class="math inline">\(\lambda = 5\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1</span>, <span class="dv">5</span>);</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> alpha<span class="sc">/</span><span class="dv">2</span>)<span class="sc">/</span>x <span class="sc">&lt;</span> <span class="dv">5</span> <span class="sc">&amp;&amp;</span> <span class="dv">5</span> <span class="sc">&lt;</span> <span class="sc">-</span><span class="fu">log</span>(alpha<span class="sc">/</span><span class="dv">2</span>)<span class="sc">/</span>x}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9893</code></pre>
+</div>
+</div>
+</section>
+<section id="beta-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="beta-distribution">Beta distribution</h2>
+<p>Also in class, we saw that if <span class="math inline">\(X\sim\operatorname{Beta}(\alpha, 1)\)</span>, then using the pivotal quantity <span class="math inline">\(Y=X^{\alpha}\)</span>, we have <span class="math inline">\(Y\sim U(0, 1)\)</span>, giving the confidence interval (using <span class="math inline">\(1-q\)</span> as our confidence level to avoid confusion with the unknown parameter <span class="math inline">\(\alpha\)</span>)</p>
+<p><span class="math display">\[\frac{\ln\left(1 - \frac{q}{2}\right)}{\ln X} &lt; \alpha &lt; \frac{\ln\left(\frac{q}{2}\right)}{\ln X}\]</span></p>
+<p>And performing a Monte Carlo simulation, secretly knowing that <span class="math inline">\(\alpha = 6\)</span>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>);</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> q<span class="sc">/</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">log</span>(x) <span class="sc">&lt;</span> <span class="dv">6</span> <span class="sc">&amp;&amp;</span> <span class="dv">6</span> <span class="sc">&lt;</span> <span class="fu">log</span>(q<span class="sc">/</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">log</span>(x)}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9895</code></pre>
 </div>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
