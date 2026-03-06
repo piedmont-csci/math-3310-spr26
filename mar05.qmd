@@ -1,0 +1,48 @@
+---
+title: "Approximate Confidence Intervals"
+format: html
+editor: visual
+---
+
+## Wald interval
+
+In class, we decided to consider $X_1,\ldots,X_{38}\sim\operatorname{Bernoulli}(0.4)$.
+
+Even though we secretly know $p = 0.4$, let's estimate it with a Wald interval.  In particular, if $\hat p$ is the sample proportion (i.e., the number of 1's we get divided by 38), then we want the following to have probability $1 - \alpha$.
+
+$$\hat p - z_{\alpha/2}\sqrt{\frac{\hat p(1 - \hat p)}{n}} <  p < \hat p + z_{\alpha/2}\sqrt{\frac{\hat p(1 - \hat p)}{n}}$$
+
+Let's test this with a Monte Carlo simulation.  Choosing $1 - \alpha = 0.95$, we compute a bunch of confidence intervals and expect that about 95\% of the time, we'll get one containing $p = 0.4$.
+
+
+```{r}
+z <- qnorm(0.05/2, lower.tail = FALSE)
+n <- 38
+p <- 0.4
+mean(replicate(10000, {
+    x <- rbinom(n, 1, p);
+    pHat <- mean(x);
+    E <- z * sqrt(pHat * (1 - pHat) / n);
+    pHat - E < p && p < pHat + E}))
+```
+
+## Wilson interval
+
+Recall that the Wald interval uses two different levels of approximation: the central limit theorem (so we can use probabilities from a standard normal distribution) and approximating the $p$'s that show up in the standard deviation of the Bernoulli distribution with $\hat p$'s.
+
+If we instead solve the inequality $|\hat p - p| < z_{\alpha/2}\sqrt{\frac{p(1-p)}{n}}$ for $p$, so that our only level of approximation is the central limit theorem, then we get the Wilson interval, bounded by:
+
+$$\frac{1}{1+z_{\alpha/2}^2/n}\left(\hat p + \frac{z_{\alpha/2}^2}{2n} \pm z_{\alpha/2}\sqrt{\frac{\hat p(1-\hat p)}{n} + \frac{z_{\alpha/2}^2}{4n^2}}\right)$$
+
+Let's play the same game and perform a Monte Carlo simulation for the Wilson interval:
+
+```{r}
+mean(replicate(10000, {
+    x <- rbinom(n, 1, p);
+    pHat <- mean(x);
+    center <- 1/(1 + z^2/n) * (pHat + z^2/(2*n));
+    radius <- 1/(1 + z^2/n) * z * sqrt(pHat * (1 - pHat)/n + z^2/(4*n^2));
+    center - radius < p && p < center + radius}))
+```
+
+
